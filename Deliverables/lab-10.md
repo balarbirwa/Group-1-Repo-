@@ -1,4 +1,4 @@
-##Lab 10-Deliverable##
+#Lab 10-Deliverable
 
 Team Information
 Team Number: #1

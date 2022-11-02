@@ -2,9 +2,9 @@
 
 ## Team Information
 
-Team Number: 1
+###### Team Number: 1
 
-Team Name: “The Company”
+###### Team Name: “The Company”
 
 Team Members: 
 - Birwa Balar
@@ -14,3 +14,4 @@ Team Members:
 - Leonora Stiernborg
 - Beauregard Cave
 
+Communication Plan: Text group-chat (for team communication), Emails (for communication w/ TA)

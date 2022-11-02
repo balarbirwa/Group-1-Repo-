@@ -6,7 +6,7 @@
 
 ###### Team Name: “The Company”
 
-Team Members: 
+###### Team Members: 
 - Birwa Balar
 - Kalli Davidson
 - Joshua Dinerman
@@ -14,4 +14,4 @@ Team Members:
 - Leonora Stiernborg
 - Beauregard Cave
 
-Communication Plan: Text group-chat (for team communication), Emails (for communication w/ TA)
+###### Communication Plan: Text group-chat (for team communication), Emails (for communication w/ TA)

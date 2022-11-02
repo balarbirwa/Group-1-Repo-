@@ -3,7 +3,9 @@
 ## Team Information
 
 Team Number: 1
+
 Team Name: “The Company”
+
 Team Members: 
 - Birwa Balar
 - Kalli Davidson

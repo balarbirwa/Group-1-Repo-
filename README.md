@@ -2,7 +2,12 @@
 Text
 
 # Contributors
-Team Members
+Michael Munhbold
+Kalli Davidson
+Beauregard Cave
+Birwa Balar
+Leonora Stiernborg 
+Joshua Dinerman
 
 # Technology Stack used for the Project
 Text

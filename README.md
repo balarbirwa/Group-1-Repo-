@@ -1,10 +1,10 @@
-#Application Description
+# Application Description
 Text
 
-#Contributors
+# Contributors
 Team Members
 
-#Technology Stack used for the Project
+# Technology Stack used for the Project
 Text
 
 # Prerequisites to run the application

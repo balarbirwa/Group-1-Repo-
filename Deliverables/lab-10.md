@@ -15,3 +15,5 @@
 - Beauregard Cave
 
 ###### Communication Plan: Text group-chat (for team communication), Emails (for communication w/ TA)
+
+###### Meeting Plans: 

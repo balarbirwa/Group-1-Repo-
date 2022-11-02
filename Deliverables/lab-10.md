@@ -28,3 +28,12 @@ An onboarding portal that allows employees and employers to update information r
 Moreover, the site will provide the company with a separate tab for new employees to get familiar with the work environment and other information the company would like their employees to have access to. This is an essential part of onboarding for new employees to feel welcome. The site will also include who is working on what project and which department each employee is currently in. This will ensure new employees can become familiar with who is on their team; thus make the onboarding process run smoothly. 
 Vision Statement: 
 For our company’s employees, this onboarding site is an interactive user interface that allows employees to update their project progress, get familiar with our company's goals, and update/view their account information. Unlike other company sites, our product provides a one stop shop for companies who are looking to make their new employee onboarding transition easier and current employees’ project manageability. 
+
+
+## Development Information
+- Version Control:(https://github.com/balarbirwa/Group-1-Repo-)
+- Development Methodology(https://github.com/users/JoshuaD9907/projects/2/views/1 ):
+
+## Use Case Diagram:
+
+

@@ -2,19 +2,26 @@
 <%- include ('../partials/menu') %>
 
 <main>
-    <h1>Register</h1>
+    <center><h2>Sign up:</h2><br></center>
     <div class="container">
-      <center><form action = "/register" method = "POST">
-          <label for="username">Username:</label><br>
-          <input type="text" id="username" name="username" required><br>
-          <label for="password">Password:</label><br>
-          <input type="type" id="password" name="password" required><br><br>
-          <input type="submit" value="Register" href = "POST /login">
-        </form></center>
+		<center>
+			<form action = "/register" method = "POST">
+				<label for="username">Username:</label><br>
+				<input type="text" id="username" name="username" required><br><br>
+				<label for="password">Password:</label><br>
+				<input type="type" id="password" name="password" required><br>
+				<label for="password">Confirm Password:</label><br>
+				<input type="type" id="password" name="password" required><br><br>
+				<!-- figure out how to check if two fields are equal and progress if they are -->
+				<input type="submit" value="Register" href = "POST /login">
+			</form>
+		</center>
     </div>
     <center>
-        <p>Already have an account?</p>
-        <a href = 'login'> Login </a>
+		<br>
+		<label for="login">Already have an account?</label>
+        <!-- <p>Already have an account?</p> -->
+        <a id="login" href = 'login'>Login</a>
     </center>
   </main>
 

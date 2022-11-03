@@ -2,17 +2,31 @@
 
 <main>
 	<center><h2>Log in:</h2></center>
+
 	<div class="container">
+
 		<center>
 		<form action = "/login" method = "POST">
-			<label for="username">Username:</label><br>
-			<input type="text" id="username" name="username" required><br>
-			<label for="password">Password:</label><br>
+
+			<label for="username">Username:</label>
+			<input type="text" id="username" name="username" required><br><br>
+			
+			<label for="password">Password:</label>
 			<input type="text" id="password" name="password" required><br><br>
-			<input type="submit" value="Log In" href = "POST /login">
+			
+			<input type="submit" value="Log In">
+		
 		</form>
 		</center>
+
 	</div>
+
+	<center>
+		<br>
+		<label for="register">Don't have an account?</label>
+        <a id="register" href="register">Sign Up</a>
+    </center>
+
 </main>
 
 <%- include ('../partials/footer') %>

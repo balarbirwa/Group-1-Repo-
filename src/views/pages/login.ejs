@@ -1,15 +1,18 @@
 <%- include ('../partials/header') %> <%- include ('../partials/menu') %>
 
 <main>
-  <div class="container">
-    <center><form action = "/login" method = "POST">
-        <label for="username">Username:</label><br>
-        <input type="text" id="username" name="username" required><br>
-        <label for="email">Email:</label><br>
-        <input type="email" id="email" name="email" required><br><br>
-        <input type="submit" value="Submit" href = "POST /login">
-      </form></center>
-  </div>
+	<center><h2>Log in:</h2></center>
+	<div class="container">
+		<center>
+		<form action = "/login" method = "POST">
+			<label for="username">Username:</label><br>
+			<input type="text" id="username" name="username" required><br>
+			<label for="password">Password:</label><br>
+			<input type="text" id="password" name="password" required><br><br>
+			<input type="submit" value="Log In" href = "POST /login">
+		</form>
+		</center>
+	</div>
 </main>
 
 <%- include ('../partials/footer') %>

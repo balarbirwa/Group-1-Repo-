@@ -21,7 +21,7 @@ const db = pgp(dbConfig);
 // test your database
 db.connect()
 	.then(obj => {
-		console.log('Database connection successful'); // you can view this message in the docker compose logs
+		console.log("Database connection successful\n"); // you can view this message in the docker compose logs
 		obj.done(); // success, release the connection;
 	})
 	.catch(error => {
@@ -48,30 +48,127 @@ app.use(
 );
 
 
+app.get("/register", (req, res) => {
+	res.render("pages/register");
+});
 
-app.get('/', (req, res) => {
-	res.render('pages/login', {
-		// TODO: JSON data required to render the page
-		// username: req.session.user.username,
-		// password: req.session.user.password
-	});
+// Register submission
+app.post('/register', async (req, res) => {
+	const password = req.body.password;
+	const hash = await bcrypt.hash(password.toString(), 10);
+	const username = req.body.username;
+
+	const query = `insert into users (username, password) VALUES ($1, $2);`;
+	// const values = [username];
+
+	await db.any(query, [
+		username,
+		hash
+	])
+		.then((data) => {
+			console.log(password + "\n");
+			console.log(hash);
+			res.redirect("/login");
+			// user = data;
+		})
+		.catch((err) => {
+			console.log(err);
+			res.redirect("/register");
+		});
+
 });
 
 
+
+// Login submission
 app.get("/login", (req, res) => {
 	res.render("pages/login");
 });
 
+app.post("/login", async (req, res) => {
+	const username = req.body.username;
+	const password = req.body.password;
+	const query = `select * from users where users.username = '${username}';`;
+	const values = [username];
+
+	var user;
+
+	await db.one(query, values)
+		.then((data) => {
+			user = data;
+		})
+		.catch((err) => {
+			console.log(err);
+			res.redirect("/login");
+		});
+
+	if(user) {
+
+		const match = await bcrypt.compare(req.body.password, user.password); //await is explained in #8
+
+		if(match) {
+
+			req.session.user = {
+				api_key: process.env.API_KEY,
+			};
+			req.session.save();
+
+			res.redirect('/home');
+
+		}
+
+		else {
+			console.log("incorrect password");
+			res.redirect('/login');
+		}
+
+	}
+
+});
+
+
+
+
+// Authentication Middleware.
+const auth = (req, res, next) => {
+	if (!req.session.user) {
+		// Default to register page.
+		return res.redirect('/register');
+	}
+	next();
+};
+  
+// Authentication Required
+app.use(auth);
+
+
+
+app.get('/', (req, res) => {
+	res.render('pages/register', {
+		// TODO: JSON data required to render the page
+		username: req.session.user.username,
+		password: req.session.user.password
+	});
+});
 
 
 
 
 
+app.get("/home", (req, res) => {
+	res.render('pages/home');
+});
 
 
 
+
+app.get("/logout", (req, res) => {
+	req.session.destroy();
+	res.render("pages/logout");
+});
 
 
 
 app.listen(3000);
 console.log("Server is listening on port 3000");
+

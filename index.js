@@ -3,7 +3,7 @@ const app = express();
 const pgp = require('pg-promise')();
 const bodyParser = require('body-parser');
 const session = require('express-session');
-//const bcrypt = require('bcrypt');
+const bcrypt = require('bcrypt');
 const axios = require('axios');
 
 
@@ -52,7 +52,7 @@ app.post('/register', async (req, res) => {
 	const firstname = req.body.firstname;
 	const lastname = req.body.lastname;
 	const hash = await bcrypt.hash(req.body.password, 10)
-	var query = "INSERT INTO users (username, firstname, lastname, password) VALUES($1, $2);"
+	var query = "INSERT INTO users (username, firstname, lastname, password) VALUES($1, $2, $3, $4);"
 	//the logic goes here
 	db.any(query, [
 		username,

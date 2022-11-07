@@ -83,7 +83,7 @@ app.post('/login', async (req, res) => {
 	]).then(async (user) => {
 		const match = await bcrypt.compare(req.body.password, user[0].password); //await is explained in #8
 		if (match == false) {
-			err = ("Incorrect username or password.");
+			err = ("Incorrect password");
 		} else {
 			return res.send({ message: "User added successful" });
 		}
@@ -97,7 +97,6 @@ app.post('/login', async (req, res) => {
 		//});
 	});
 });
-
 
 
 app.listen(3000);

@@ -21,26 +21,24 @@ const db = pgp(dbConfig);
 // test your database
 db.connect()
 	.then(obj => {
-		console.log('Database connection successful'); // you can view this message in the docker compose logs
+		console.log('Database connection successfull'); // you can view this message in the docker compose logs
 		obj.done(); // success, release the connection;
 	})
 	.catch(error => {
 		console.log('ERROR:', error.message || error);
 	});
-
-
-app.set('view engine', 'ejs');
-
+// set the view engine to ejs
+app.set("view engine", "ejs");
 app.use(bodyParser.json());
 
+// set session
 app.use(
 	session({
-		secret: process.env.SESSION_SECRET,
-		saveUninitialized: false,
-		resave: false,
+		secret: "XASDASDA",
+		saveUninitialized: true,
+		resave: true,
 	})
 );
-
 app.use(
 	bodyParser.urlencoded({
 		extended: true,
@@ -48,29 +46,57 @@ app.use(
 );
 
 
-
-app.get('/', (req, res) => {
-	res.render('pages/login', {
-		// TODO: JSON data required to render the page
-		// username: req.session.user.username,
-		// password: req.session.user.password
+app.post('/register', async (req, res) => {
+	console.log("COMES HERE")
+	const username = req.body.username;
+	const firstname = req.body.firstname;
+	const lastname = req.body.lastname;
+	const hash = await bcrypt.hash(req.body.password, 10)
+	var query = "INSERT INTO users (username, firstname, lastname, password) VALUES($1, $2, $3, $4);"
+	//the logic goes here
+	db.any(query, [
+		username,
+		firstname,
+		lastname,
+		hash,
+	]).then(() => {
+		console.log("new user:", username)
+		return res.send({ message: "User added successful" });
+		// TODO: Redirect to login page when implemented 
+		// res.redirect("/login") login to portal 
+	}).catch(function (err) {
+		return result.status(200).json(err);
+		// TODO: Implement redirect to page when implemented 
+		// res.redirect("/register", {
+		//   error: true,
+		//  message: err.message
+		// });
 	});
 });
 
-
-app.get("/login", (req, res) => {
-	res.render("pages/login");
+app.post('/login', async (req, res) => {
+	const username = req.body.username;
+	var query = "Select * FROM users WHERE username=$1"
+	//the logic goes here
+	db.any(query, [
+		username,
+	]).then(async (user) => {
+		const match = await bcrypt.compare(req.body.password, user[0].password); //await is explained in #8
+		if (match == false) {
+			err = ("Incorrect password");
+		} else {
+			return res.send({ message: "User added successful" });
+		}
+	}).catch(function (err) {
+		return res.status(200).json(err);
+		// TODO: redirect to login page 
+		//res.render("/login", {
+		//    courses: [],
+		//    error: true,
+		//   message: err.message
+		//});
+	});
 });
-
-
-
-
-
-
-
-
-
-
 
 
 app.listen(3000);

@@ -3,7 +3,7 @@ const app = express();
 const pgp = require('pg-promise')();
 const bodyParser = require('body-parser');
 const session = require('express-session');
-const bcrypt = require('bcrypt');
+//const bcrypt = require('bcrypt');
 const axios = require('axios');
 
 
@@ -28,7 +28,9 @@ db.connect()
 		console.log('ERROR:', error.message || error);
 	});
 // set the view engine to ejs
+app.set('views', './src/views');
 app.set("view engine", "ejs");
+
 app.use(bodyParser.json());
 
 // set session
@@ -44,6 +46,15 @@ app.use(
 		extended: true,
 	})
 );
+
+app.get('/', (req, res) => {
+	res.render('pages/login');
+});
+
+
+app.get("/login", (req, res) => {
+	res.render("pages/login");
+});
 
 
 app.post('/register', async (req, res) => {
@@ -99,6 +110,8 @@ app.post('/login', async (req, res) => {
 		//});
 	});
 });
+
+
 
 
 app.listen(3000);

@@ -18,6 +18,9 @@ const dbConfig = {
 
 const db = pgp(dbConfig);
 
+app.listen(3000);
+console.log("Server is listening on port 3000");
+
 // test your database
 db.connect()
 	.then(obj => {
@@ -48,6 +51,9 @@ app.use(
 );
 
 
+
+
+
 app.get("/register", (req, res) => {
 	res.render("pages/register");
 });
@@ -58,18 +64,14 @@ app.post('/register', async (req, res) => {
 	const hash = await bcrypt.hash(password.toString(), 10);
 	const username = req.body.username;
 
-	const query = `insert into users (username, password) VALUES ($1, $2);`;
-	// const values = [username];
+	const query = `INSERT INTO users (username, password) VALUES ($1, $2);`;
 
 	await db.any(query, [
 		username,
 		hash
 	])
 		.then((data) => {
-			console.log(password + "\n");
-			console.log(hash);
 			res.redirect("/login");
-			// user = data;
 		})
 		.catch((err) => {
 			console.log(err);
@@ -88,7 +90,7 @@ app.get("/login", (req, res) => {
 app.post("/login", async (req, res) => {
 	const username = req.body.username;
 	const password = req.body.password;
-	const query = `select * from users where users.username = '${username}';`;
+	const query = `SELECT * FROM users WHERE users.username = '${username}';`;
 	const values = [username];
 
 	var user;
@@ -145,7 +147,6 @@ app.use(auth);
 
 app.get('/', (req, res) => {
 	res.render('pages/register', {
-		// TODO: JSON data required to render the page
 		username: req.session.user.username,
 		password: req.session.user.password
 	});
@@ -168,7 +169,4 @@ app.get("/logout", (req, res) => {
 });
 
 
-
-app.listen(3000);
-console.log("Server is listening on port 3000");
 

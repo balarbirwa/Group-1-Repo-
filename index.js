@@ -51,14 +51,16 @@ app.post('/register', async (req, res) => {
 	const username = req.body.username;
 	const firstname = req.body.firstname;
 	const lastname = req.body.lastname;
+	const isManager = false;
 	const hash = await bcrypt.hash(req.body.password, 10)
-	var query = "INSERT INTO users (username, firstname, lastname, password) VALUES($1, $2, $3, $4);"
+	var query = "INSERT INTO users (username, firstName, lastName, password, isManager) VALUES($1, $2, $3, $4, $5);"
 	//the logic goes here
 	db.any(query, [
 		username,
 		firstname,
 		lastname,
 		hash,
+		isManager,
 	]).then(() => {
 		console.log("new user:", username)
 		return res.send({ message: "User added successful" });

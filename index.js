@@ -136,7 +136,13 @@ app.post('/login', async (req, res) => {
 });
 
 
+app.get("/project", (req, res) => {
+	res.render("pages/project");
+});
 
+app.get("/projects", (req, res) => {
+	res.render("pages/allProjects");
+});
 
 app.listen(3000);
 console.log("Server is listening on port 3000");

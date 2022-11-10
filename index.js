@@ -48,12 +48,36 @@ app.use(
 );
 
 app.get('/', (req, res) => {
-	res.render('pages/login');
+	res.render('pages/welcome');
 });
 
 
 app.get("/login", (req, res) => {
 	res.render("pages/login");
+});
+
+app.get("/register", (req, res) => {
+	res.render("pages/register");
+});
+
+app.get("/profile", (req, res) => {
+	res.render("pages/profile");
+});
+
+app.get("/employeeMenu", (req, res) => {
+	res.render("pages/employeeMenu");
+});
+
+app.get("/employee", (req, res) => {
+	res.render("pages/employee");
+});
+
+app.get("/courses", (req, res) => {
+	res.render("pages/courses");
+});
+
+app.get("/allEmployees", (req, res) => {
+	res.render("pages/allEmployees");
 });
 
 

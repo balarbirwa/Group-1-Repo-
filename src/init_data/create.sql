@@ -2,8 +2,8 @@ DROP TABLE IF EXISTS users;
 CREATE TABLE users(
     user_id SERIAL PRIMARY KEY, 
     username VARCHAR(50) NOT NULL,
-    firstName VARCHAR(50) NOT NULL, 
-    lastName VARCHAR(50) NOT NULL, 
+    firstName VARCHAR(50),-- NOT NULL, 
+    lastName VARCHAR(50),-- NOT NULL, 
     isManager BOOLEAN, 
     manager_id int,
     password VARCHAR(256)

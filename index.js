@@ -3,7 +3,7 @@ const app = express();
 const pgp = require('pg-promise')();
 const bodyParser = require('body-parser');
 const session = require('express-session');
-const bcrypt = require('bcrypt');
+//const bcrypt = require('bcrypt');
 const axios = require('axios');
 
 
@@ -28,7 +28,9 @@ db.connect()
 		console.log('ERROR:', error.message || error);
 	});
 // set the view engine to ejs
+app.set('views', './src/views');
 app.set("view engine", "ejs");
+
 app.use(bodyParser.json());
 
 // set session
@@ -45,20 +47,31 @@ app.use(
 	})
 );
 
+app.get('/', (req, res) => {
+	res.render('pages/login');
+});
+
+
+app.get("/login", (req, res) => {
+	res.render("pages/login");
+});
+
 
 app.post('/register', async (req, res) => {
 	console.log("COMES HERE")
 	const username = req.body.username;
 	const firstname = req.body.firstname;
 	const lastname = req.body.lastname;
+	const isManager = false;
 	const hash = await bcrypt.hash(req.body.password, 10)
-	var query = "INSERT INTO users (username, firstname, lastname, password) VALUES($1, $2, $3, $4);"
+	var query = "INSERT INTO users (username, firstName, lastName, password, isManager) VALUES($1, $2, $3, $4, $5);"
 	//the logic goes here
 	db.any(query, [
 		username,
 		firstname,
 		lastname,
 		hash,
+		isManager,
 	]).then(() => {
 		console.log("new user:", username)
 		return res.send({ message: "User added successful" });
@@ -97,6 +110,8 @@ app.post('/login', async (req, res) => {
 		//});
 	});
 });
+
+
 
 
 app.listen(3000);

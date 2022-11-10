@@ -18,9 +18,6 @@ const dbConfig = {
 
 const db = pgp(dbConfig);
 
-app.listen(3000);
-console.log("Server is listening on port 3000");
-
 // test your database
 db.connect()
 	.then(obj => {
@@ -60,8 +57,7 @@ app.get("/register", (req, res) => {
 
 // Register submission
 app.post('/register', async (req, res) => {
-	const password = req.body.password;
-	const hash = await bcrypt.hash(password.toString(), 10);
+	const hash = await bcrypt.hash(req.body.password, 10);
 	const username = req.body.username;
 
 	const query = `INSERT INTO users (username, password) VALUES ($1, $2);`;
@@ -72,6 +68,7 @@ app.post('/register', async (req, res) => {
 	])
 		.then((data) => {
 			res.redirect("/login");
+			// user = data;
 		})
 		.catch((err) => {
 			console.log(err);
@@ -90,11 +87,12 @@ app.get("/login", (req, res) => {
 app.post("/login", async (req, res) => {
 	const username = req.body.username;
 	const password = req.body.password;
-	const query = `SELECT * FROM users WHERE users.username = '${username}';`;
+	const query = `select * from users where users.username = '${username}';`;
 	const values = [username];
 
 	var user;
 
+	// get the student_id based on the emailid
 	await db.one(query, values)
 		.then((data) => {
 			user = data;
@@ -169,4 +167,5 @@ app.get("/logout", (req, res) => {
 });
 
 
-
+app.listen(3000);
+console.log("Server is listening on port 3000");

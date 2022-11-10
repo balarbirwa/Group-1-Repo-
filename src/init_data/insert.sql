@@ -1,4 +1,3 @@
-INSERT INTO users (
         username,
         firstName,
         lastName,

@@ -140,37 +140,57 @@ app.get("/project", (req, res) => {
 	res.render("pages/project");
 });
 
-app.get("/projects", (req, res) => {
+app.get("/project2", (req, res) => {
 	res.render("pages/allProjects");
 });
 
-app.get('/projects/:projectname', function(req,res){
-	var projects= `select * from projects;`;
-	var projectname = req.params.projectName;
-	var current_project = `select * from projects where projectname = '${projectname}';`;
-	db.task('get-everything', task => {
-	   return task.batch([
-		   task.any(project),
-		   task.any(current_project)
-	   ]);
-	})
-	   .then(data => {
-		   res.status('200')
-	   .json({
-			   projects: data[0],
-			   projectinfo: data[2][0]
-		   })
-	   })
-	   .catch(err => {
-		   console.log('Uh Oh spaghettio');
-		   req.flash('error', err);
-		   res.status('400')
-	   .json({
-			   projects: '',
-			   projectinfo: ''
-		   })
-	   });
-	});
+app.get("/projects", async (req, res) => {
+	let query = 'select * from projects';
+	db.any(query)
+		.then(projects => {
+			res.render("pages/allProjects" , {
+				projects: projects
+			});
+		});
+});
+
+// app.get('/projects/:projectname', function(req,res){
+
+// 	let projects = 'select * from projects';
+// 	let projectname = req.params.projectName;
+// 	let currproject = `select * from projects where projectName = '${projectname}';`;
+
+// 	try{
+// 		db.any(currproject)
+// 	}
+// 	catch{
+
+// 	}
+
+// 	db.task('get-everything', task => {
+// 	   return task.batch([
+// 		   task.any(project),
+// 		   task.any(current_project)
+// 	   ]);
+// 	})
+// 	   .then(data => {
+// 		   res.status('200')
+// 	   .json({
+// 			   projects: data[0],
+// 			   projectinfo: data[2][0]
+// 		   })
+// 	   })
+// 	   .catch(err => {
+// 		   console.log('Uh Oh spaghettio');
+// 		   req.flash('error', err);
+// 		   res.status('400')
+// 	   .json({
+// 			   projects: '',
+// 			   projectinfo: ''
+// 		   })
+// 	   });
+// 	});
+
 
 app.listen(3000);
 console.log("Server is listening on port 3000");

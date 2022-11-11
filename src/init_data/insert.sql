@@ -10,10 +10,7 @@ INSERT INTO users (
 
 INSERT INTO projects (
     projectName,
-    description, 
-    lastName, 
-    isManager, 
-    password) VALUES
+    description) VALUES
 ('Project 1', 'The first project'),
 ('Project 2', 'The second project')
 ;

@@ -144,5 +144,33 @@ app.get("/projects", (req, res) => {
 	res.render("pages/allProjects");
 });
 
+app.get('/projects/:projectname', function(req,res){
+	var projects= `select * from projects;`;
+	var projectname = req.params.projectName;
+	var current_project = `select * from projects where projectname = '${projectname}';`;
+	db.task('get-everything', task => {
+	   return task.batch([
+		   task.any(project),
+		   task.any(current_project)
+	   ]);
+	})
+	   .then(data => {
+		   res.status('200')
+	   .json({
+			   projects: data[0],
+			   projectinfo: data[2][0]
+		   })
+	   })
+	   .catch(err => {
+		   console.log('Uh Oh spaghettio');
+		   req.flash('error', err);
+		   res.status('400')
+	   .json({
+			   projects: '',
+			   projectinfo: ''
+		   })
+	   });
+	});
+
 app.listen(3000);
 console.log("Server is listening on port 3000");

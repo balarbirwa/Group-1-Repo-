@@ -3,7 +3,7 @@ const app = express();
 const pgp = require('pg-promise')();
 const bodyParser = require('body-parser');
 const session = require('express-session');
-//const bcrypt = require('bcrypt');
+const bcrypt = require('bcrypt');
 const axios = require('axios');
 
 
@@ -36,9 +36,9 @@ app.use(bodyParser.json());
 // set session
 app.use(
 	session({
-		secret: "XASDASDA",
-		saveUninitialized: true,
-		resave: true,
+		secret: process.env.SESSION_SECRET,
+		saveUninitialized: false,
+		resave: false,
 	})
 );
 app.use(
@@ -97,17 +97,13 @@ app.post('/register', async (req, res) => {
 		hash,
 		isManager,
 	]).then(() => {
-		console.log("new user:", username)
-		return res.send({ message: "User added successful" });
-		// TODO: Redirect to login page when implemented 
-		// res.redirect("/login") login to portal 
+		console.log("new user:", username);
+		res.redirect("/login");
 	}).catch(function (err) {
-		return result.status(200).json(err);
-		// TODO: Implement redirect to page when implemented 
-		// res.redirect("/register", {
-		//   error: true,
-		//  message: err.message
-		// });
+		res.redirect("/register", {
+			error: true,
+			message: err.message
+		});
 	});
 });
 
@@ -120,21 +116,22 @@ app.post('/login', async (req, res) => {
 	]).then(async (user) => {
 		const match = await bcrypt.compare(req.body.password, user[0].password); //await is explained in #8
 		if (match == false) {
-			err = ("Incorrect password");
+			err = ("Incorrect username or password.");
 		} else {
-			return res.send({ message: "User added successful" });
+			req.session.user = {
+				api_key: process.env.API_KEY,
+			};
+			req.session.save();
+			res.redirect("/profile");
 		}
 	}).catch(function (err) {
-		return res.status(200).json(err);
-		// TODO: redirect to login page 
-		//res.render("/login", {
-		//    courses: [],
-		//    error: true,
-		//   message: err.message
-		//});
+		res.render("/login", {
+			courses: [],
+			error: true,
+			message: err.message
+		});
 	});
 });
-
 
 app.get("/project", (req, res) => {
 	res.render("pages/project");

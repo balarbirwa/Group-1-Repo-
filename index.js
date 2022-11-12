@@ -97,46 +97,35 @@ app.post('/register', async (req, res) => {
 		hash,
 		isManager,
 	]).then(() => {
-		console.log("new user:", username)
-		return res.send({ message: "User added successful" });
-		// TODO: Redirect to login page when implemented 
-		// res.redirect("/login") login to portal 
+		console.log("new user:", username);
+		res.redirect("/login");
 	}).catch(function (err) {
-		return result.status(200).json(err);
-		// TODO: Implement redirect to page when implemented 
-		// res.redirect("/register", {
-		//   error: true,
-		//  message: err.message
-		// });
+		res.redirect("/register", {
+			error: true,
+			message: err.message
+		});
 	});
 });
 
 app.post('/login', async (req, res) => {
-	console.log("HEJ HIT KOMMER VI")
 	const username = req.body.username;
 	var query = "Select * FROM users WHERE username=$1"
 	//the logic goes here
 	db.any(query, [
 		username,
 	]).then(async (user) => {
-		console.log("COMES HERE")
 		const match = await bcrypt.compare(req.body.password, user[0].password); //await is explained in #8
-		console.log("COMES HERE 2")
 		if (match == false) {
-			console.log("COMES HERE 2")
 			err = ("Incorrect username or password.");
 		} else {
-			console.log(user[0].password)
-			return res.send({ message: "User logged in sucsesfully" });
+			res.redirect("/profile");
 		}
 	}).catch(function (err) {
-		return res.status(200).json(err);
-		// TODO: redirect to login page 
-		//res.render("/login", {
-		//    courses: [],
-		//    error: true,
-		//   message: err.message
-		//});
+		res.render("/login", {
+			courses: [],
+			error: true,
+			message: err.message
+		});
 	});
 });
 

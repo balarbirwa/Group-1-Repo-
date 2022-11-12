@@ -3,7 +3,7 @@ const app = express();
 const pgp = require('pg-promise')();
 const bodyParser = require('body-parser');
 const session = require('express-session');
-//const bcrypt = require('bcrypt');
+const bcrypt = require('bcrypt');
 const axios = require('axios');
 
 
@@ -112,17 +112,22 @@ app.post('/register', async (req, res) => {
 });
 
 app.post('/login', async (req, res) => {
+	console.log("HEJ HIT KOMMER VI")
 	const username = req.body.username;
 	var query = "Select * FROM users WHERE username=$1"
 	//the logic goes here
 	db.any(query, [
 		username,
 	]).then(async (user) => {
+		console.log("COMES HERE")
 		const match = await bcrypt.compare(req.body.password, user[0].password); //await is explained in #8
+		console.log("COMES HERE 2")
 		if (match == false) {
-			err = ("Incorrect password");
+			console.log("COMES HERE 2")
+			err = ("Incorrect username or password.");
 		} else {
-			return res.send({ message: "User added successful" });
+			console.log(user[0].password)
+			return res.send({ message: "User logged in sucsesfully" });
 		}
 	}).catch(function (err) {
 		return res.status(200).json(err);

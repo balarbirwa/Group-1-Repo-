@@ -61,7 +61,13 @@ app.get("/register", (req, res) => {
 });
 
 app.get("/profile", (req, res) => {
-	res.render("pages/profile");
+	res.render("pages/profile", {
+		username: req.session.user.username,
+		firstname: req.session.user.firstname,
+		lastname: req.session.user.lastname,
+	});
+
+
 });
 
 app.get("/employeeMenu", (req, res) => {
@@ -86,7 +92,7 @@ app.post('/register', async (req, res) => {
 	const username = req.body.username;
 	const firstname = req.body.firstname;
 	const lastname = req.body.lastname;
-	const isManager = false;
+	const ismanager = false;
 	const hash = await bcrypt.hash(req.body.password, 10)
 	var query = "INSERT INTO users (username, firstName, lastName, password, isManager) VALUES($1, $2, $3, $4, $5);"
 	//the logic goes here
@@ -95,41 +101,50 @@ app.post('/register', async (req, res) => {
 		firstname,
 		lastname,
 		hash,
-		isManager,
+		ismanager,
 	]).then(() => {
 		console.log("new user:", username);
 		res.redirect("/login");
 	}).catch(function (err) {
-		res.redirect("/register", {
-			error: true,
-			message: err.message
-		});
+		console.log(err)
+		res.redirect("/register")
 	});
 });
+
+const user = {
+	username: undefined,
+	firstname: undefined,
+	lastname: undefined,
+	ismanager: undefined,
+};
 
 app.post('/login', async (req, res) => {
 	const username = req.body.username;
 	var query = "Select * FROM users WHERE username=$1"
 	//the logic goes here
-	db.any(query, [
+	db.one(query, [
 		username,
-	]).then(async (user) => {
-		const match = await bcrypt.compare(req.body.password, user[0].password); //await is explained in #8
+	]).then(async (data) => {
+		const match = await bcrypt.compare(req.body.password, data.password); //await is explained in #8
 		if (match == false) {
 			err = ("Incorrect username or password.");
 		} else {
 			req.session.user = {
 				api_key: process.env.API_KEY,
 			};
+			user.username = username;
+			console.log(data)
+			console.log(data.lastName)
+			user.firstname = data.firstname;
+			user.lastname = data.lastname;
+			user.ismanager = data.ismanager;
+			req.session.user = user;
 			req.session.save();
 			res.redirect("/profile");
 		}
 	}).catch(function (err) {
-		res.render("/login", {
-			courses: [],
-			error: true,
-			message: err.message
-		});
+		console.log(err);
+		res.redirect("/login");
 	});
 });
 

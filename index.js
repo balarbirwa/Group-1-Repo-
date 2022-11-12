@@ -36,9 +36,9 @@ app.use(bodyParser.json());
 // set session
 app.use(
 	session({
-		secret: "XASDASDA",
-		saveUninitialized: true,
-		resave: true,
+		secret: process.env.SESSION_SECRET,
+		saveUninitialized: false,
+		resave: false,
 	})
 );
 app.use(
@@ -118,6 +118,10 @@ app.post('/login', async (req, res) => {
 		if (match == false) {
 			err = ("Incorrect username or password.");
 		} else {
+			req.session.user = {
+				api_key: process.env.API_KEY,
+			};
+			req.session.save();
 			res.redirect("/profile");
 		}
 	}).catch(function (err) {
@@ -128,7 +132,6 @@ app.post('/login', async (req, res) => {
 		});
 	});
 });
-
 
 app.get("/project", (req, res) => {
 	res.render("pages/project");

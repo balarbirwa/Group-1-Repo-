@@ -21,3 +21,9 @@ CREATE TABLE users_to_projects(
     user_id INTEGER NOT NULL REFERENCES users(user_id),
     project_id INTEGER NOT NULL REFERENCES projects(project_id)
 );
+
+DROP TABLE IF EXISTS users_to_manager;
+CREATE TABLE users_to_manager (
+    user_id INTEGER NOT NULL REFERENCES users(user_id),
+    manager_id INTEGER NOT NULL REFERENCES users(user_id)
+);

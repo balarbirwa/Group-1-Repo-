@@ -63,11 +63,9 @@ app.get("/register", (req, res) => {
 app.get("/profile", (req, res) => {
 	res.render("pages/profile", {
 		username: req.session.user.username,
-		firstname: req.session.user.firstname,
-		lastname: req.session.user.lastname,
+		first_name: req.session.user.first_name,
+		last_name: req.session.user.last_name,
 	});
-
-
 });
 
 app.get("/employeeMenu", (req, res) => {
@@ -78,30 +76,28 @@ app.get("/employee", (req, res) => {
 	res.render("pages/employee");
 });
 
-app.get("/courses", (req, res) => {
-	res.render("pages/courses");
-});
-
 app.get("/allEmployees", (req, res) => {
 	res.render("pages/allEmployees");
 });
 
 
+
+
 app.post('/register', async (req, res) => {
 	console.log("COMES HERE")
 	const username = req.body.username;
-	const firstname = req.body.firstname;
-	const lastname = req.body.lastname;
-	const ismanager = false;
+	const first_name = req.body.firstname;
+	const last_name = req.body.lastname;
+	const is_manager = false;
 	const hash = await bcrypt.hash(req.body.password, 10)
-	var query = "INSERT INTO users (username, firstName, lastName, password, isManager) VALUES($1, $2, $3, $4, $5);"
+	var query = "INSERT INTO users (username, first_name, last_name, password, is_manager) VALUES($1, $2, $3, $4, $5);"
 	//the logic goes here
 	db.any(query, [
 		username,
-		firstname,
-		lastname,
+		first_name,
+		last_name,
 		hash,
-		ismanager,
+		is_manager,
 	]).then(() => {
 		console.log("new user:", username);
 		res.redirect("/login");
@@ -111,11 +107,37 @@ app.post('/register', async (req, res) => {
 	});
 });
 
+const user_projects = `
+SELECT DISTINCT
+  projects.project_id,
+  projects.project_name,
+  projects.description
+  FROM
+	projects WHERE projects.project_id IN ( SELECT users_to_projects.project_id
+		FROM users_to_projects
+		WHERE users_to_projects.user_id = $1)`;
+
+//Return all coruses for specific user
+app.get("/courses", (req, res) => {
+	query = user_projects
+	db.any(query, [
+		req.session.user.user_id,
+	]).then(function (courses) {
+		console.log(courses);
+		res.render("pages/courses", {
+			courses,
+		});
+	}).catch(function (err) {
+		return res.status(200).json(err);
+	});
+});
+
 const user = {
+	user_id: undefined,
 	username: undefined,
-	firstname: undefined,
-	lastname: undefined,
-	ismanager: undefined,
+	first_name: undefined,
+	last_name: undefined,
+	is_manager: undefined,
 };
 
 app.post('/login', async (req, res) => {
@@ -133,11 +155,10 @@ app.post('/login', async (req, res) => {
 				api_key: process.env.API_KEY,
 			};
 			user.username = username;
-			console.log(data)
-			console.log(data.lastName)
-			user.firstname = data.firstname;
-			user.lastname = data.lastname;
-			user.ismanager = data.ismanager;
+			user.user_id = data.user_id;
+			user.first_name = data.first_name;
+			user.last_name = data.last_name;
+			user.is_manager = data.is_manager;
 			req.session.user = user;
 			req.session.save();
 			res.redirect("/profile");
@@ -146,10 +167,6 @@ app.post('/login', async (req, res) => {
 		console.log(err);
 		res.redirect("/login");
 	});
-});
-
-app.get("/project", (req, res) => {
-	res.render("pages/project");
 });
 
 app.get("/projects", (req, res) => {

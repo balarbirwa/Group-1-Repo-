@@ -72,16 +72,46 @@ app.get("/employeeMenu", (req, res) => {
 	res.render("pages/employeeMenu");
 });
 
-app.get("/employee", (req, res) => {
-	res.render("pages/employee");
+//app.get("/employee", (req, res) => {
+//	res.render("pages/employee");
+//});
+
+const user = {
+	user_id: undefined,
+	username: undefined,
+	first_name: undefined,
+	last_name: undefined,
+	is_manager: undefined,
+};
+
+app.post('/login', async (req, res) => {
+	const username = req.body.username;
+	var query = "Select * FROM users WHERE username=$1"
+	//the logic goes here
+	db.one(query, [
+		username,
+	]).then(async (data) => {
+		const match = await bcrypt.compare(req.body.password, data.password); //await is explained in #8
+		if (match == false) {
+			err = ("Incorrect username or password.");
+		} else {
+			req.session.user = {
+				api_key: process.env.API_KEY,
+			};
+			user.username = username;
+			user.user_id = data.user_id;
+			user.first_name = data.first_name;
+			user.last_name = data.last_name;
+			user.is_manager = data.is_manager;
+			req.session.user = user;
+			req.session.save();
+			res.redirect("/profile");
+		}
+	}).catch(function (err) {
+		console.log(err);
+		res.redirect("/login");
+	});
 });
-
-app.get("/allEmployees", (req, res) => {
-	res.render("pages/allEmployees");
-});
-
-
-
 
 app.post('/register', async (req, res) => {
 	console.log("COMES HERE")
@@ -132,42 +162,29 @@ app.get("/courses", (req, res) => {
 	});
 });
 
-const user = {
-	user_id: undefined,
-	username: undefined,
-	first_name: undefined,
-	last_name: undefined,
-	is_manager: undefined,
-};
+employee_for_manager = `
+SELECT *
+  FROM
+	users WHERE users.user_id IN ( SELECT users_to_manager.user_id
+		FROM users_to_manager
+		WHERE users_to_manager.manager_id = $1)`;
 
-app.post('/login', async (req, res) => {
-	const username = req.body.username;
-	var query = "Select * FROM users WHERE username=$1"
-	//the logic goes here
-	db.one(query, [
-		username,
-	]).then(async (data) => {
-		const match = await bcrypt.compare(req.body.password, data.password); //await is explained in #8
-		if (match == false) {
-			err = ("Incorrect username or password.");
-		} else {
-			req.session.user = {
-				api_key: process.env.API_KEY,
-			};
-			user.username = username;
-			user.user_id = data.user_id;
-			user.first_name = data.first_name;
-			user.last_name = data.last_name;
-			user.is_manager = data.is_manager;
-			req.session.user = user;
-			req.session.save();
-			res.redirect("/profile");
-		}
-	}).catch(function (err) {
-		console.log(err);
-		res.redirect("/login");
-	});
+//Return all employees for a specific manager 
+app.get("/allEmployees", (req, res) => {
+	query = employee_for_manager
+	db.any(query, [
+		req.session.user.user_id,
+	]).then(
+		function (employees) {
+			console.log(employees)
+			res.render("pages/allEmployees", {
+				employees,
+			});
+		}).catch(function (err) {
+			return res.status(200).json(err);
+		});
 });
+
 
 app.get("/projects", (req, res) => {
 	res.render("pages/allProjects");

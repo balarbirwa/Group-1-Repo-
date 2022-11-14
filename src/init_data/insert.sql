@@ -20,6 +20,16 @@ INSERT INTO projects (project_name, description) VALUES
 ('Course 2', 'Another fun course')
 ;
 
+INSERT INTO projects(
+    projectName, 
+    description, 
+    user_id
+) VALUES 
+('Project01', 'To create value in the company. Products and/or services will be offered to customers upon completion.',1),
+('Project02', 'To meet the goals of our top customer. They have requested a suite of products and services.',1),
+('Project03', 'To be completed in time for the conclusion. Project03 is on a very strict timeline.',1)
+;
+
 
 INSERT INTO users_to_projects (user_id, project_id) VALUES
 (2, 1),

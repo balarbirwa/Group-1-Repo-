@@ -11,7 +11,7 @@
 ## Birwa
 - managers ejs files; "manager views" of pages, adjust/improve UI
 ## Kalli
-- 
+- debug login/register, get login/register to work properly
 ## Beau
 - project ejs files (single project, project menu), projects backend prep. update meeting notes files, review release notes for clarity?
 

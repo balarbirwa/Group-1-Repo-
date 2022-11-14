@@ -48,7 +48,7 @@ app.use(
 );
 
 app.get('/', (req, res) => {
-	res.render('pages/welcome');
+	res.render('pages/login');
 });
 
 
@@ -114,7 +114,6 @@ app.post('/login', async (req, res) => {
 });
 
 app.post('/register', async (req, res) => {
-	console.log("COMES HERE")
 	const username = req.body.username;
 	const first_name = req.body.firstname;
 	const last_name = req.body.lastname;
@@ -193,7 +192,7 @@ app.get("/projects2", async (req, res) => {
 	let query = 'select * from projects';
 	db.any(query)
 		.then(projects => {
-			res.render("pages/allProjects" , {
+			res.render("pages/allProjects", {
 				projects: projects
 			});
 		});

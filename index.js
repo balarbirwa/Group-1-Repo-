@@ -185,11 +185,11 @@ app.get("/allEmployees", (req, res) => {
 		});
 });
 
-app.get("/project2", (req, res) => {
+app.get("/projects", (req, res) => {
 	res.render("pages/allProjects");
 });
 
-app.get("/projects", async (req, res) => {
+app.get("/projects2", async (req, res) => {
 	let query = 'select * from projects';
 	db.any(query)
 		.then(projects => {

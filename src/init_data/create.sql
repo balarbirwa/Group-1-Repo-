@@ -1,10 +1,10 @@
 DROP TABLE IF EXISTS users;
 CREATE TABLE users(
     user_id SERIAL PRIMARY KEY, 
-    username VARCHAR(50) NOT NULL,
-    firstName VARCHAR(50) NOT NULL, 
-    lastName VARCHAR(50) NOT NULL, 
-    isManager BOOLEAN, 
+    username VARCHAR(50) UNIQUE,
+    first_name VARCHAR(50) NOT NULL, 
+    last_name VARCHAR(50) NOT NULL, 
+    is_manager BOOLEAN, 
     manager_id int,
     password VARCHAR(256)
 );
@@ -12,13 +12,18 @@ CREATE TABLE users(
 DROP TABLE IF EXISTS projects;
 CREATE TABLE projects(
     project_id SERIAL PRIMARY KEY, 
-    projectName VARCHAR(50), 
-    description VARCHAR(500), 
-    FOREIGN KEY (user_id) REFERENCES users(user_id)
+    project_name VARCHAR(50), 
+    description VARCHAR(500)
 );
 
 DROP TABLE IF EXISTS users_to_projects;
 CREATE TABLE users_to_projects(
-    FOREIGN KEY (user_id) REFERENCES users(user_id),
-    FOREIGN KEY (project_id) REFERENCES projects(project_id)
+    user_id INTEGER NOT NULL REFERENCES users(user_id),
+    project_id INTEGER NOT NULL REFERENCES projects(project_id)
+);
+
+DROP TABLE IF EXISTS users_to_manager;
+CREATE TABLE users_to_manager (
+    user_id INTEGER NOT NULL REFERENCES users(user_id),
+    manager_id INTEGER NOT NULL REFERENCES users(user_id)
 );

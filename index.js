@@ -72,9 +72,9 @@ app.get("/employeeMenu", (req, res) => {
 	res.render("pages/employeeMenu");
 });
 
-//app.get("/employee", (req, res) => {
-//	res.render("pages/employee");
-//});
+app.get("/employee", (req, res) => {
+	res.render("pages/employee");
+});
 
 const user = {
 	user_id: undefined,

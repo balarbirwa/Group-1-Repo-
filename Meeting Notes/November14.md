@@ -24,5 +24,7 @@
 - projects ejs page
 
 # Other Notes
+- maybe use backstage.io?
+getting the user side functional and adding management 
 - troubleshooting: ejs views may be broken? unexpected behavior when trying to view finished UI
 - strange database/node modules errors... fixed now. need to record How that was fixed if it ends up popping up again, though

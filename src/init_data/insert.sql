@@ -37,6 +37,20 @@ INSERT INTO users_to_projects (user_id, project_id) VALUES
 (3, 2)
 ;
 
+INSERT INTO users_to_projects(
+    user_id,
+    project_id
+) VALUES 
+(1,3),
+(1,4),
+(1,5),
+(2,3),
+(2,4),
+(3,3),
+(3,4),
+(3,5)
+;
+
 INSERT INTO users_to_manager (user_id, manager_id) VALUES
 (2, 1),
 (3, 1)

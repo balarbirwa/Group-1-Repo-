@@ -188,11 +188,34 @@ app.get("/projects", (req, res) => {
 	res.render("pages/allProjects");
 });
 
-app.get("/projects2", async (req, res) => {
+app.get("/projects2", async (req, res) => { // appears to load successfully; docker crashes upon calling this function
+
+	let query = 'select * from projects'; // get proj data
+
+	const result = db.any(query) // query db
+		.then ((response)=> { 
+			response.json(); // access data from promise, translate to json
+		});
+	
+	const renderPage = async() => {
+		res.render("pages/allProjects", {
+			projects: result // render projects menu w/ data accessible
+		});
+	}
+
+	try { 
+		renderPage();
+	}
+	catch {
+		console.log("error!");
+	}
+});
+
+app.get("/projects3", async (req, res) => { // crashes docker
 	let query = 'select * from projects';
 	db.any(query)
 		.then(projects => {
-			res.render("pages/allProjects", {
+			res.render("pages/projects", {
 				projects: projects
 			});
 		});

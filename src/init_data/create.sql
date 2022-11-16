@@ -20,6 +20,7 @@ DROP TABLE IF EXISTS users_to_projects;
 CREATE TABLE users_to_projects(
     user_id INTEGER NOT NULL REFERENCES users(user_id),
     project_id INTEGER NOT NULL REFERENCES projects(project_id)
+    completed BOOLEAN, 
 );
 
 DROP TABLE IF EXISTS users_to_manager;

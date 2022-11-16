@@ -31,10 +31,10 @@ INSERT INTO projects(
 ;
 
 
-INSERT INTO users_to_projects (user_id, project_id) VALUES
-(2, 1),
-(2, 2),
-(3, 2)
+INSERT INTO users_to_projects (user_id, project_id, completed) VALUES
+(2, 1, TRUE),
+(2, 2, FALSE),
+(3, 2, TRUE)
 ;
 
 INSERT INTO users_to_manager (user_id, manager_id) VALUES

@@ -147,13 +147,13 @@ SELECT DISTINCT
 		WHERE users_to_projects.user_id = $1)`;
 
 //Return all coruses for specific user
-app.get("/courses", (req, res) => {
+app.get("/projects", (req, res) => {
 	query = user_projects
 	db.any(query, [
 		req.session.user.user_id,
 	]).then(function (courses) {
 		console.log(courses);
-		res.render("pages/courses", {
+		res.render("pages/allProjects", {
 			courses,
 		});
 	}).catch(function (err) {
@@ -184,6 +184,8 @@ app.get("/allEmployees", (req, res) => {
 		});
 });
 
+
+
 app.get("/projects", (req, res) => {
 	res.render("pages/allProjects");
 });
@@ -193,17 +195,17 @@ app.get("/projects2", async (req, res) => { // appears to load successfully; doc
 	let query = 'select * from projects'; // get proj data
 
 	const result = db.any(query) // query db
-		.then ((response)=> { 
+		.then((response) => {
 			response.json(); // access data from promise, translate to json
 		});
-	
-	const renderPage = async() => {
+
+	const renderPage = async () => {
 		res.render("pages/allProjects", {
 			projects: result // render projects menu w/ data accessible
 		});
 	}
 
-	try { 
+	try {
 		renderPage();
 	}
 	catch {

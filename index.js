@@ -62,9 +62,9 @@ app.get("/register", (req, res) => {
 
 app.get("/profile", (req, res) => {
 	res.render("pages/profile", {
-		username: req.session.user.username,
-		first_name: req.session.user.first_name,
-		last_name: req.session.user.last_name,
+		// username: req.session.user.username,
+		// first_name: req.session.user.first_name,
+		// last_name: req.session.user.last_name,
 	});
 });
 
@@ -150,11 +150,11 @@ SELECT DISTINCT
 app.get("/courses", (req, res) => {
 	query = user_projects
 	db.any(query, [
-		req.session.user.user_id,
+		// req.session.user.user_id,
 	]).then(function (courses) {
 		console.log(courses);
 		res.render("pages/courses", {
-			courses,
+			// courses,
 		});
 	}).catch(function (err) {
 		return res.status(200).json(err);
@@ -184,26 +184,47 @@ app.get("/allEmployees", (req, res) => {
 		});
 });
 
-app.get("/projects", (req, res) => {
-	res.render("pages/allProjects");
+app.get("/projects", async (req, res) => {
+	let query = 'select * from projects'; // get proj data
+
+	try {
+		// let promise = await db.any(query).then(resp => resp.json);
+
+		if (req)
+		{
+			let proj = [];
+			for (const r of results) {
+				let data = await db.oneOrNone(query); 
+				proj.push[data];
+				console.log("proj:", proj[0].projectName)
+			}
+			
+		}
+		res.render("pages/allProjects");
+	}
+	catch {
+		console.log("error!");
+		res.redirect("/profile");
+	}
+
 });
 
-app.get("/projects2", async (req, res) => { // appears to load successfully; docker crashes upon calling this function
+app.get("/projectsRender", async (req, res) => { // appears to load successfully; docker crashes upon calling this function
 
 	let query = 'select * from projects'; // get proj data
 
-	const result = db.any(query) // query db
-		.then ((response)=> { 
-			response.json(); // access data from promise, translate to json
-		});
-	
-	const renderPage = async() => {
-		res.render("pages/allProjects", {
-			projects: result // render projects menu w/ data accessible
-		});
-	}
+	try {
+		const result = db.any(query) // query db
+			.then((response) => {
+				response.json(); // access data from promise, translate to json
+			});
 
-	try { 
+		const renderPage = async () => {
+			res.render("pages/allProjects", {
+				projects: result // render projects menu w/ data accessible
+			});
+		}
+
 		renderPage();
 	}
 	catch {

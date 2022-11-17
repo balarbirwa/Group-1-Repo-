@@ -5,29 +5,13 @@ INSERT INTO users (username, first_name, last_name, is_manager, password) VALUES
 ('Employee1', 'Firstname', 'Lastname', TRUE, 'password')
 ;
 
-INSERT INTO projects (
-    projectName,
-    description) VALUES
-('Project 1', 'The first project'),
-('Project 2', 'The second project')
-=======
-('JSmith', 'John', 'Smith', FALSE, 1, '$2y$10$QrWprImnjMNlzB7N4PU9wur7pK5qWjCBv39eYD8b/PAAGIIjLjE8m'),
-('StanMan', 'Stanley', 'Stanford', FALSE, 1, '$2y$10$fho1vqSftKQrlbu0PrR/4.gRwo/OZDsm.ibnt02xMkVDZ/2v4I80G')
-;
-
-INSERT INTO projects (project_name, description) VALUES
-('Course 1', 'This is a really fun course'),
-('Course 2', 'Another fun course')
-;
-
 INSERT INTO projects(
     projectName, 
-    description, 
-    user_id
+    description
 ) VALUES 
-('Project01', 'To create value in the company. Products and/or services will be offered to customers upon completion.',1),
-('Project02', 'To meet the goals of our top customer. They have requested a suite of products and services.',1),
-('Project03', 'To be completed in time for the conclusion. Project03 is on a very strict timeline.',1)
+('Project01', 'To create value in the company. Products and/or services will be offered to customers upon completion.'),
+('Project02', 'To meet the goals of our top customer. They have requested a suite of products and services.'),
+('Project03', 'To be completed in time for the conclusion. Project03 is on a very strict timeline.')
 ;
 
 

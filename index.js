@@ -188,18 +188,6 @@ app.get("/projects", async (req, res) => {
 	let query = 'select * from projects'; // get proj data
 
 	try {
-		// let promise = await db.any(query).then(resp => resp.json);
-
-		if (req)
-		{
-			let proj = [];
-			for (const r of results) {
-				let data = await db.oneOrNone(query); 
-				proj.push[data];
-				console.log("proj:", proj[0].projectName)
-			}
-			
-		}
 		res.render("pages/allProjects");
 	}
 	catch {
@@ -209,37 +197,17 @@ app.get("/projects", async (req, res) => {
 
 });
 
-app.get("/projectsRender", async (req, res) => { // appears to load successfully; docker crashes upon calling this function
-
+app.get("/project", async (req, res) => {
 	let query = 'select * from projects'; // get proj data
 
 	try {
-		const result = db.any(query) // query db
-			.then((response) => {
-				response.json(); // access data from promise, translate to json
-			});
-
-		const renderPage = async () => {
-			res.render("pages/allProjects", {
-				projects: result // render projects menu w/ data accessible
-			});
-		}
-
-		renderPage();
+		res.render("pages/project");
 	}
 	catch {
 		console.log("error!");
+		res.redirect("/profile");
 	}
-});
 
-app.get("/projects3", async (req, res) => { // crashes docker
-	let query = 'select * from projects';
-	db.any(query)
-		.then(projects => {
-			res.render("pages/projects", {
-				projects: projects
-			});
-		});
 });
 
 // app.get('/projects/:projectname', function(req,res){

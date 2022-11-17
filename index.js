@@ -147,14 +147,14 @@ SELECT DISTINCT
 		WHERE users_to_projects.user_id = $1)`;
 
 //Return all coruses for specific user
-app.get("/courses", (req, res) => {
+app.get("/projects", (req, res) => {
 	query = user_projects
 	db.any(query, [
-		// req.session.user.user_id,
+		req.session.user.user_id,
 	]).then(function (courses) {
 		console.log(courses);
-		res.render("pages/courses", {
-			// courses,
+		res.render("pages/allProjects", {
+			courses,
 		});
 	}).catch(function (err) {
 		return res.status(200).json(err);

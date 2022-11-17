@@ -154,12 +154,65 @@ app.get("/projects", (req, res) => {
 	]).then(function (courses) {
 		console.log(courses);
 		res.render("pages/allProjects", {
-			courses,
+			projects,
 		});
 	}).catch(function (err) {
 		return res.status(200).json(err);
 	});
 });
+
+
+const user_projects_done = `
+SELECT DISTINCT
+  projects.project_id,
+  projects.project_name,
+  projects.description
+  FROM
+	projects WHERE projects.project_id IN ( SELECT users_to_projects.project_id
+		FROM users_to_projects
+		WHERE users_to_projects.user_id = $1 && users_to_projects.completed = True)`;
+
+//Return all coruses for specific user
+app.get("/projects_done", (req, res) => {
+	query = user_projects_done
+	db.any(query, [
+		req.session.user.user_id,
+	]).then(function (courses) {
+		console.log(courses);
+		res.render("pages/allProjects", {
+			projects,
+		});
+	}).catch(function (err) {
+		return res.status(200).json(err);
+	});
+});
+
+const user_projects_not_done = `
+SELECT DISTINCT
+  projects.project_id,
+  projects.project_name,
+  projects.description
+  FROM
+	projects WHERE projects.project_id IN ( SELECT users_to_projects.project_id
+		FROM users_to_projects
+		WHERE users_to_projects.user_id = $1 && users_to_projects.completed = False)`;
+
+
+//Return all coruses for specific user
+app.get("/projects_not_done", (req, res) => {
+	query = user_projects_not_done
+	db.any(query, [
+		req.session.user.user_id,
+	]).then(function (courses) {
+		console.log(courses);
+		res.render("pages/allProjects", {
+			projects,
+		});
+	}).catch(function (err) {
+		return res.status(200).json(err);
+	});
+});
+
 
 employee_for_manager = `
 SELECT *

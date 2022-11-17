@@ -1,0 +1,32 @@
+<%- include ('../partials/header') %>
+
+  <center>
+    <h2>Welcome!</h2>
+    <h5>Create your account:</h5>
+  </center>
+  <center><span class="fas fa-user-circle"></span></center>
+  <div class="container">
+    <center>
+      <form action="/register" method="POST">
+        <label for="username"><span class="fas fa-user-circle"></span> Username:</label><br>
+        <input type="text" id="username" name="username" required><br>
+        <label for="firstname"><span class="fas fa-user-circle"></span> First name:</label><br>
+        <input type="text" id="firstname" name="firstname" required><br>
+        <label for="lastname"><span class="fas fa-user-circle"></span> Last name:</label><br>
+        <input type="text" id="lastname" name="lastname" required><br>
+        <label for="password"><span class="fas fa-eye"></span> Password:</label><br>
+        <input type="password" id="password" name="password" required><br><br>
+        <input type="submit" value="Register" href="POST /login">
+        <span class="fas fa-arrow-right"></span>
+
+      </form>
+    </center>
+  </div>
+  <center>
+    <font size="+50">&emsp;</font>
+    <p>Already have an account?</p>
+    <a href='login'> Login </a>
+  </center>
+  </main>
+
+  <%- include ('../partials/footer') %>

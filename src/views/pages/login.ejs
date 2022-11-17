@@ -1,0 +1,28 @@
+<%- include ('../partials/header') %>
+  <link rel="stylesheet" href="../../resources/css/style.css">
+  <main>
+    <center>
+      <h2>Welcome!</h2>
+      <h5>Log into your account:</h5>
+    </center>
+    <center><span class="fas fa-sign-in-alt"></span></center>
+    <div class="container">
+      <center>
+        <form action="/login" method="POST">
+          <label for="username"><span class="fas fa-user"></span> Username:</label><br>
+          <input type="text" id="username" name="username" required><br>
+          <label for="password"><span class="fas fa-eye"></span> Password:</label><br>
+          <input type="password" id="password" name="password" required><br><br>
+          <input type="submit" value="Submit" href="POST /login">
+          <span class="fas fa-arrow-right"></span>
+        </form>
+      </center>
+    </div>
+    <center>
+      <font size="+50">&emsp;</font>
+      <p>New User?</p>
+      <a href='register'> Register </a>
+    </center>
+  </main>
+
+  <%- include ('../partials/footer') %>

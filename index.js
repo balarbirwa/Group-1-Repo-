@@ -27,9 +27,9 @@ db.connect()
 	.catch(error => {
 		console.log('ERROR:', error.message || error);
 	});
-
-
-app.set('view engine', 'ejs');
+// set the view engine to ejs
+app.set('views', './src/views');
+app.set("view engine", "ejs");
 
 app.use(bodyParser.json());
 
@@ -47,124 +47,216 @@ app.use(
 	})
 );
 
+app.get('/', (req, res) => {
+	res.render('pages/login');
+});
 
 
-
+app.get("/login", (req, res) => {
+	res.render("pages/login");
+});
 
 app.get("/register", (req, res) => {
 	res.render("pages/register");
 });
 
-// Register submission
-app.post('/register', async (req, res) => {
-	const hash = await bcrypt.hash(req.body.password, 10);
-	const username = req.body.username;
-
-	const query = `INSERT INTO users (username, password) VALUES ($1, $2);`;
-
-	await db.any(query, [
-		username,
-		hash
-	])
-		.then((data) => {
-			res.redirect("/login");
-			// user = data;
-		})
-		.catch((err) => {
-			console.log(err);
-			res.redirect("/register");
-		});
-
-});
-
-
-
-// Login submission
-app.get("/login", (req, res) => {
-	res.render("pages/login");
-});
-
-app.post("/login", async (req, res) => {
-	const username = req.body.username;
-	const password = req.body.password;
-	const query = `select * from users where users.username = '${username}';`;
-	const values = [username];
-
-	var user;
-
-	// get the student_id based on the emailid
-	await db.one(query, values)
-		.then((data) => {
-			user = data;
-		})
-		.catch((err) => {
-			console.log(err);
-			res.redirect("/login");
-		});
-
-	if(user) {
-
-		const match = await bcrypt.compare(req.body.password, user.password); //await is explained in #8
-
-		if(match) {
-
-			req.session.user = {
-				api_key: process.env.API_KEY,
-			};
-			req.session.save();
-
-			res.redirect('/home');
-
-		}
-
-		else {
-			console.log("incorrect password");
-			res.redirect('/login');
-		}
-
-	}
-
-});
-
-
-
-
-// Authentication Middleware.
-const auth = (req, res, next) => {
-	if (!req.session.user) {
-		// Default to register page.
-		return res.redirect('/register');
-	}
-	next();
-};
-  
-// Authentication Required
-app.use(auth);
-
-
-
-app.get('/', (req, res) => {
-	res.render('pages/register', {
+app.get("/profile", (req, res) => {
+	res.render("pages/profile", {
 		username: req.session.user.username,
-		password: req.session.user.password
+		first_name: req.session.user.first_name,
+		last_name: req.session.user.last_name,
 	});
 });
 
-
-
-
-
-app.get("/home", (req, res) => {
-	res.render('pages/home');
+app.get("/employeeMenu", (req, res) => {
+	res.render("pages/employeeMenu");
 });
 
-
-
-
-app.get("/logout", (req, res) => {
-	req.session.destroy();
-	res.render("pages/logout");
+app.get("/employee", (req, res) => {
+	res.render("pages/employee");
 });
+
+const user = {
+	user_id: undefined,
+	username: undefined,
+	first_name: undefined,
+	last_name: undefined,
+	is_manager: undefined,
+};
+
+app.post('/login', async (req, res) => {
+	const username = req.body.username;
+	var query = "Select * FROM users WHERE username=$1"
+	//the logic goes here
+	db.one(query, [
+		username,
+	]).then(async (data) => {
+		const match = await bcrypt.compare(req.body.password, data.password); //await is explained in #8
+		if (match == false) {
+			err = ("Incorrect username or password.");
+		} else {
+			req.session.user = {
+				api_key: process.env.API_KEY,
+			};
+			user.username = username;
+			user.user_id = data.user_id;
+			user.first_name = data.first_name;
+			user.last_name = data.last_name;
+			user.is_manager = data.is_manager;
+			req.session.user = user;
+			req.session.save();
+			res.redirect("/profile");
+		}
+	}).catch(function (err) {
+		console.log(err);
+		res.redirect("/login");
+	});
+});
+
+app.post('/register', async (req, res) => {
+	const username = req.body.username;
+	const first_name = req.body.firstname;
+	const last_name = req.body.lastname;
+	const is_manager = false;
+	const hash = await bcrypt.hash(req.body.password, 10)
+	var query = "INSERT INTO users (username, first_name, last_name, password, is_manager) VALUES($1, $2, $3, $4, $5);"
+	//the logic goes here
+	db.any(query, [
+		username,
+		first_name,
+		last_name,
+		hash,
+		is_manager,
+	]).then(() => {
+		console.log("new user:", username);
+		res.redirect("/login");
+	}).catch(function (err) {
+		console.log(err)
+		res.redirect("/register")
+	});
+});
+
+const user_projects = `
+SELECT DISTINCT
+  projects.project_id,
+  projects.project_name,
+  projects.description
+  FROM
+	projects WHERE projects.project_id IN ( SELECT users_to_projects.project_id
+		FROM users_to_projects
+		WHERE users_to_projects.user_id = $1)`;
+
+//Return all coruses for specific user
+app.get("/courses", (req, res) => {
+	query = user_projects
+	db.any(query, [
+		req.session.user.user_id,
+	]).then(function (courses) {
+		console.log(courses);
+		res.render("pages/courses", {
+			courses,
+		});
+	}).catch(function (err) {
+		return res.status(200).json(err);
+	});
+});
+
+employee_for_manager = `
+SELECT *
+  FROM
+	users WHERE users.user_id IN ( SELECT users_to_manager.user_id
+		FROM users_to_manager
+		WHERE users_to_manager.manager_id = $1)`;
+
+//Return all employees for a specific manager 
+app.get("/allEmployees", (req, res) => {
+	query = employee_for_manager
+	db.any(query, [
+		req.session.user.user_id,
+	]).then(
+		function (employees) {
+			console.log(employees)
+			res.render("pages/allEmployees", {
+				employees,
+			});
+		}).catch(function (err) {
+			return res.status(200).json(err);
+		});
+});
+
+app.get("/projects", (req, res) => {
+	res.render("pages/allProjects");
+});
+
+app.get("/projects2", async (req, res) => { // appears to load successfully; docker crashes upon calling this function
+
+	let query = 'select * from projects'; // get proj data
+
+	const result = db.any(query) // query db
+		.then ((response)=> { 
+			response.json(); // access data from promise, translate to json
+		});
+	
+	const renderPage = async() => {
+		res.render("pages/allProjects", {
+			projects: result // render projects menu w/ data accessible
+		});
+	}
+
+	try { 
+		renderPage();
+	}
+	catch {
+		console.log("error!");
+	}
+});
+
+app.get("/projects3", async (req, res) => { // crashes docker
+	let query = 'select * from projects';
+	db.any(query)
+		.then(projects => {
+			res.render("pages/projects", {
+				projects: projects
+			});
+		});
+});
+
+// app.get('/projects/:projectname', function(req,res){
+
+// 	let projects = 'select * from projects';
+// 	let projectname = req.params.projectName;
+// 	let currproject = `select * from projects where projectName = '${projectname}';`;
+
+// 	try{
+// 		db.any(currproject)
+// 	}
+// 	catch{
+
+// 	}
+
+// 	db.task('get-everything', task => {
+// 	   return task.batch([
+// 		   task.any(project),
+// 		   task.any(current_project)
+// 	   ]);
+// 	})
+// 	   .then(data => {
+// 		   res.status('200')
+// 	   .json({
+// 			   projects: data[0],
+// 			   projectinfo: data[2][0]
+// 		   })
+// 	   })
+// 	   .catch(err => {
+// 		   console.log('Uh Oh spaghettio');
+// 		   req.flash('error', err);
+// 		   res.status('400')
+// 	   .json({
+// 			   projects: '',
+// 			   projectinfo: ''
+// 		   })
+// 	   });
+// 	});
 
 
 app.listen(3000);

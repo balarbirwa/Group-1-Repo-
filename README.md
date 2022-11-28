@@ -17,9 +17,9 @@ Moreover, the site will provide the company with a separate tab for new employee
 - List Item 3
 
 # Necessary Software
-- List Item 1
-- List Item 2
-- List Item 3
+- Docker Desktop
+- Internet Browser
+- INSERT MORE IF NEEDED
 
 # Locally Running ""The Company" Portal"
 Text

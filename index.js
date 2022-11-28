@@ -253,6 +253,14 @@ app.get("/projects_not_done", (req, res) => {
 	});
 });
 
+const manager_for_user = `
+SELECT *
+	FROM
+	users
+	JOIN users_to_manager ON users.manager_id = users_to_manager.manager_id
+		WHERE users_to_manager.user_id = $1)`;
+
+
 
 employee_for_manager = `
 SELECT *

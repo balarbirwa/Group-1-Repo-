@@ -49,7 +49,7 @@ app.use(
 
 app.get("/logout", (req, res) => {
 	req.session.destroy();
-	res.render("pages/logout");
+	res.render("pages/login");
 });
 
 app.get("/register", (req, res) => {
@@ -150,10 +150,19 @@ app.get("/login", (req, res) => {
 
 
 app.get("/", (req, res) => {
-	res.render("pages/profile", {
-		username: req.session.user.username,
-		first_name: req.session.user.first_name,
-		last_name: req.session.user.last_name,
+	query = user_projects
+	db.any(query, [
+		req.session.user.user_id,
+	]).then(function (projects) {
+		console.log(projects);
+		res.render("pages/profile", {
+			username: req.session.user.username,
+			first_name: req.session.user.first_name,
+			last_name: req.session.user.last_name,
+			projects,
+		});
+	}).catch(function (err) {
+		return res.status(200).json(err);
 	});
 });
 
@@ -167,25 +176,25 @@ app.get("/employee", (req, res) => {
 
 
 const user_projects = `
-SELECT DISTINCT
-  projects.project_id,
-  projects.project_name,
-  projects.description
+SELECT 
+*
   FROM
-	projects WHERE projects.project_id IN ( SELECT users_to_projects.project_id
-		FROM users_to_projects
-		WHERE users_to_projects.user_id = $1)`;
+  users_to_projects
+	JOIN projects ON users_to_projects.project_id = projects.project_id 
+		WHERE users_to_projects.user_id = $1 `;
 
+//projects.project_id,
+//projects.project_name,
+//projects.description
 //Return all coruses for specific user
-
 app.get("/projects", (req, res) => {
 	query = user_projects
 	db.any(query, [
 		req.session.user.user_id,
-	]).then(function (courses) {
-		console.log(courses);
+	]).then(function (projects) {
+		console.log(projects);
 		res.render("pages/allProjects", {
-			courses,
+			projects,
 		});
 	}).catch(function (err) {
 		return res.status(200).json(err);
@@ -195,11 +204,11 @@ app.get("/projects", (req, res) => {
 
 const user_projects_done = `
 SELECT DISTINCT
-  projects.project_id,
-  projects.project_name,
-  projects.description
-  FROM
-	projects WHERE projects.project_id IN ( SELECT users_to_projects.project_id
+projects.project_id,
+	projects.project_name,
+	projects.description
+FROM
+	projects WHERE projects.project_id IN(SELECT users_to_projects.project_id
 		FROM users_to_projects
 		WHERE users_to_projects.user_id = $1 && users_to_projects.completed = True)`;
 
@@ -208,10 +217,10 @@ app.get("/projects_done", (req, res) => {
 	query = user_projects_done
 	db.any(query, [
 		req.session.user.user_id,
-	]).then(function (courses) {
-		console.log(courses);
+	]).then(function (projects) {
+		console.log(projects);
 		res.render("pages/allProjects", {
-			courses,
+			projects,
 		});
 	}).catch(function (err) {
 		return res.status(200).json(err);
@@ -220,11 +229,11 @@ app.get("/projects_done", (req, res) => {
 
 const user_projects_not_done = `
 SELECT DISTINCT
-  projects.project_id,
-  projects.project_name,
-  projects.description
-  FROM
-	projects WHERE projects.project_id IN ( SELECT users_to_projects.project_id
+projects.project_id,
+	projects.project_name,
+	projects.description
+FROM
+	projects WHERE projects.project_id IN(SELECT users_to_projects.project_id
 		FROM users_to_projects
 		WHERE users_to_projects.user_id = $1 && users_to_projects.completed = False)`;
 
@@ -234,10 +243,10 @@ app.get("/projects_not_done", (req, res) => {
 	query = user_projects_not_done
 	db.any(query, [
 		req.session.user.user_id,
-	]).then(function (courses) {
-		console.log(courses);
+	]).then(function (projects) {
+		console.log(projects);
 		res.render("pages/allProjects", {
-			courses,
+			projects,
 		});
 	}).catch(function (err) {
 		return res.status(200).json(err);
@@ -247,8 +256,8 @@ app.get("/projects_not_done", (req, res) => {
 
 employee_for_manager = `
 SELECT *
-  FROM
-	users WHERE users.user_id IN ( SELECT users_to_manager.user_id
+	FROM
+	users WHERE users.user_id IN(SELECT users_to_manager.user_id
 		FROM users_to_manager
 		WHERE users_to_manager.manager_id = $1)`;
 

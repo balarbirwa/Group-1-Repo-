@@ -5,7 +5,7 @@ INSERT INTO users (username, first_name, last_name, is_manager, password) VALUES
 ;
 
 INSERT INTO projects(
-    projectName, 
+    project_name, 
     description
 ) VALUES 
 ('Project01', 'To create value in the company. Products and/or services will be offered to customers upon completion.'),
@@ -13,25 +13,19 @@ INSERT INTO projects(
 ('Project03', 'To be completed in time for the conclusion. Project03 is on a very strict timeline.')
 ;
 
-
-INSERT INTO users_to_projects (user_id, project_id, completed) VALUES
-(2, 1, TRUE),
-(2, 2, FALSE),
-(3, 2, TRUE)
-;
-
 INSERT INTO users_to_projects(
     user_id,
-    project_id
+    project_id,
+    completed
 ) VALUES 
-(1,1),
-(1,2),
-(1,3),
-(2,1),
-(2,2),
-(3,1),
-(3,2),
-(3,3)
+(1,1, TRUE),
+(1,2, FALSE),
+(1,3, TRUE),
+(2,1, FALSE),
+(2,2, TRUE),
+(3,1, FALSE),
+(3,2, FALSE),
+(3,3, TRUE)
 ;
 
 INSERT INTO users_to_manager (user_id, manager_id) VALUES

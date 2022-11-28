@@ -47,6 +47,11 @@ app.use(
 	})
 );
 
+app.get("/logout", (req, res) => {
+	req.session.destroy();
+	res.render("pages/logout");
+});
+
 app.get("/register", (req, res) => {
 	res.render("pages/register");
 });
@@ -56,7 +61,7 @@ app.get("/profile", (req, res) => {
 		username: req.session.user.username,
 		first_name: req.session.user.first_name,
 		last_name: req.session.user.last_name,
-	});
+	})
 });
 
 app.get("/employeeMenu", (req, res) => {
@@ -138,17 +143,13 @@ const auth = (req, res, next) => {
 app.use(auth);
 
 
-app.get('/', (req, res) => {
-	res.render('pages/login');
-});
-
 
 app.get("/login", (req, res) => {
 	res.render("pages/login");
 });
 
 
-app.get("/profile", (req, res) => {
+app.get("/", (req, res) => {
 	res.render("pages/profile", {
 		username: req.session.user.username,
 		first_name: req.session.user.first_name,

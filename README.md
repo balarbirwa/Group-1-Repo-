@@ -22,6 +22,11 @@ Moreover, the site will provide the company with a separate tab for new employee
 - INSERT MORE IF NEEDED
 
 # Locally Running ""The Company" Portal"
+Prerequisite software:
+- Docker
+- nodejs 
+  - May need to run "nmp install ejs" via commandline interface in main project folder
+
 Navigate to the root folder in your command prompt using the cd commands. Once in the root directory, run the following command: "docker-compose up". Wait for the local servers to start up. Once the server and databases are connected, in your chosen internet browser navigate to: "localhost:3000". Sample users that we have populated the database with are:
 - Manager
   - Username: CEOMan

@@ -47,26 +47,22 @@ app.use(
 	})
 );
 
-app.get('/', (req, res) => {
-	res.render('pages/login');
-});
-
-
-app.get("/login", (req, res) => {
-	res.render("pages/login");
+app.get("/logout", (req, res) => {
+	req.session.destroy();
+	res.render("pages/logout");
 });
 
 app.get("/register", (req, res) => {
 	res.render("pages/register");
 });
 
-app.get("/profile", (req, res) => {
-	res.render("pages/profile", {
-		// username: req.session.user.username,
-		// first_name: req.session.user.first_name,
-		// last_name: req.session.user.last_name,
-	});
-});
+//app.get("/profile", (req, res) => {
+//	res.render("pages/profile", {
+//		username: req.session.user.username,
+//		first_name: req.session.user.first_name,
+//		last_name: req.session.user.last_name,
+//	})
+//});
 
 app.get("/employeeMenu", (req, res) => {
 	res.render("pages/employeeMenu");
@@ -105,7 +101,7 @@ app.post('/login', async (req, res) => {
 			user.is_manager = data.is_manager;
 			req.session.user = user;
 			req.session.save();
-			res.redirect("/profile");
+			res.redirect("/");
 		}
 	}).catch(function (err) {
 		console.log(err);
@@ -136,6 +132,40 @@ app.post('/register', async (req, res) => {
 	});
 });
 
+
+const auth = (req, res, next) => {
+	if (!req.session.user) {
+		return res.render("pages/login");
+	}
+	next();
+};
+
+app.use(auth);
+
+
+
+app.get("/login", (req, res) => {
+	res.render("pages/login");
+});
+
+
+app.get("/", (req, res) => {
+	res.render("pages/profile", {
+		username: req.session.user.username,
+		first_name: req.session.user.first_name,
+		last_name: req.session.user.last_name,
+	});
+});
+
+app.get("/employeeMenu", (req, res) => {
+	res.render("pages/employeeMenu");
+});
+
+app.get("/employee", (req, res) => {
+	res.render("pages/employee");
+});
+
+
 const user_projects = `
 SELECT DISTINCT
   projects.project_id,
@@ -147,19 +177,73 @@ SELECT DISTINCT
 		WHERE users_to_projects.user_id = $1)`;
 
 //Return all coruses for specific user
-// app.get("/projects", (req, res) => {
-// 	query = user_projects
-// 	db.any(query, [
-// 		// req.session.user.user_id,
-// 	]).then(function (courses) {
-// 		console.log(courses);
-// 		res.render("pages/allProjects", {
-// 			courses,
-// 		});
-// 	}).catch(function (err) {
-// 		return res.status(200).json(err);
-// 	});
-// });
+
+app.get("/projects", (req, res) => {
+	query = user_projects
+	db.any(query, [
+		req.session.user.user_id,
+	]).then(function (courses) {
+		console.log(courses);
+		res.render("pages/allProjects", {
+			courses,
+		});
+	}).catch(function (err) {
+		return res.status(200).json(err);
+	});
+});
+
+
+const user_projects_done = `
+SELECT DISTINCT
+  projects.project_id,
+  projects.project_name,
+  projects.description
+  FROM
+	projects WHERE projects.project_id IN ( SELECT users_to_projects.project_id
+		FROM users_to_projects
+		WHERE users_to_projects.user_id = $1 && users_to_projects.completed = True)`;
+
+//Return all coruses for specific user
+app.get("/projects_done", (req, res) => {
+	query = user_projects_done
+	db.any(query, [
+		req.session.user.user_id,
+	]).then(function (courses) {
+		console.log(courses);
+		res.render("pages/allProjects", {
+			courses,
+		});
+	}).catch(function (err) {
+		return res.status(200).json(err);
+	});
+});
+
+const user_projects_not_done = `
+SELECT DISTINCT
+  projects.project_id,
+  projects.project_name,
+  projects.description
+  FROM
+	projects WHERE projects.project_id IN ( SELECT users_to_projects.project_id
+		FROM users_to_projects
+		WHERE users_to_projects.user_id = $1 && users_to_projects.completed = False)`;
+
+
+//Return all coruses for specific user
+app.get("/projects_not_done", (req, res) => {
+	query = user_projects_not_done
+	db.any(query, [
+		req.session.user.user_id,
+	]).then(function (courses) {
+		console.log(courses);
+		res.render("pages/allProjects", {
+			courses,
+		});
+	}).catch(function (err) {
+		return res.status(200).json(err);
+	});
+});
+
 
 employee_for_manager = `
 SELECT *
@@ -184,19 +268,6 @@ app.get("/allEmployees", (req, res) => {
 		});
 });
 
-app.get("/projects", async (req, res) => {
-	let query = 'select * from projects'; // get proj data
-
-	try {
-		res.render("pages/allProjects");
-	}
-	catch {
-		console.log("error!");
-		res.redirect("/profile");
-	}
-
-});
-
 app.get("/project", async (req, res) => {
 	let query = 'select * from projects'; // get proj data
 
@@ -209,44 +280,6 @@ app.get("/project", async (req, res) => {
 	}
 
 });
-
-// app.get('/projects/:projectname', function(req,res){
-
-// 	let projects = 'select * from projects';
-// 	let projectname = req.params.projectName;
-// 	let currproject = `select * from projects where projectName = '${projectname}';`;
-
-// 	try{
-// 		db.any(currproject)
-// 	}
-// 	catch{
-
-// 	}
-
-// 	db.task('get-everything', task => {
-// 	   return task.batch([
-// 		   task.any(project),
-// 		   task.any(current_project)
-// 	   ]);
-// 	})
-// 	   .then(data => {
-// 		   res.status('200')
-// 	   .json({
-// 			   projects: data[0],
-// 			   projectinfo: data[2][0]
-// 		   })
-// 	   })
-// 	   .catch(err => {
-// 		   console.log('Uh Oh spaghettio');
-// 		   req.flash('error', err);
-// 		   res.status('400')
-// 	   .json({
-// 			   projects: '',
-// 			   projectinfo: ''
-// 		   })
-// 	   });
-// 	});
-
 
 app.listen(3000);
 console.log("Server is listening on port 3000");

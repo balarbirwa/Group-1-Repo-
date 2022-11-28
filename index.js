@@ -47,42 +47,9 @@ app.use(
 	})
 );
 
-app.get('/', (req, res) => {
-	res.render('pages/login');
-});
-
-
-app.get("/login", (req, res) => {
-	res.render("pages/login");
-});
-
 app.get("/register", (req, res) => {
 	res.render("pages/register");
 });
-
-app.get("/profile", (req, res) => {
-	res.render("pages/profile", {
-		username: req.session.user.username,
-		first_name: req.session.user.first_name,
-		last_name: req.session.user.last_name,
-	});
-});
-
-app.get("/employeeMenu", (req, res) => {
-	res.render("pages/employeeMenu");
-});
-
-app.get("/employee", (req, res) => {
-	res.render("pages/employee");
-});
-
-const user = {
-	user_id: undefined,
-	username: undefined,
-	first_name: undefined,
-	last_name: undefined,
-	is_manager: undefined,
-};
 
 app.post('/login', async (req, res) => {
 	const username = req.body.username;
@@ -135,6 +102,51 @@ app.post('/register', async (req, res) => {
 		res.redirect("/register")
 	});
 });
+
+
+const auth = (req, res, next) => {
+	if (!req.session.user) {
+		return res.render("pages/login");
+	}
+	next();
+};
+
+app.use(auth);
+
+
+app.get('/', (req, res) => {
+	res.render('pages/login');
+});
+
+
+app.get("/login", (req, res) => {
+	res.render("pages/login");
+});
+
+
+app.get("/profile", (req, res) => {
+	res.render("pages/profile", {
+		username: req.session.user.username,
+		first_name: req.session.user.first_name,
+		last_name: req.session.user.last_name,
+	});
+});
+
+app.get("/employeeMenu", (req, res) => {
+	res.render("pages/employeeMenu");
+});
+
+app.get("/employee", (req, res) => {
+	res.render("pages/employee");
+});
+
+const user = {
+	user_id: undefined,
+	username: undefined,
+	first_name: undefined,
+	last_name: undefined,
+	is_manager: undefined,
+};
 
 const user_projects = `
 SELECT DISTINCT
@@ -236,6 +248,7 @@ app.get("/allEmployees", (req, res) => {
 			return res.status(200).json(err);
 		});
 });
+
 
 
 

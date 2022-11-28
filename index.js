@@ -259,17 +259,11 @@ SELECT *
 		WHERE users_to_manager.user_id = $1)`;
 
 
-
-employee_for_manager = `
-SELECT *
-	FROM
-	users WHERE users.user_id IN(SELECT users_to_manager.user_id
-		FROM users_to_manager
-		WHERE users_to_manager.manager_id = $1)`;
+all_employees = 'SELECT * FROM users'
 
 //Return all employees for a specific manager 
 app.get("/allEmployees", (req, res) => {
-	query = employee_for_manager
+	query = all_employees
 	db.any(query, [
 		req.session.user.user_id,
 	]).then(

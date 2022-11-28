@@ -176,6 +176,7 @@ SELECT DISTINCT
 		WHERE users_to_projects.user_id = $1)`;
 
 //Return all coruses for specific user
+
 app.get("/projects", (req, res) => {
 	query = user_projects
 	db.any(query, [
@@ -183,7 +184,7 @@ app.get("/projects", (req, res) => {
 	]).then(function (courses) {
 		console.log(courses);
 		res.render("pages/allProjects", {
-			projects,
+			courses,
 		});
 	}).catch(function (err) {
 		return res.status(200).json(err);
@@ -209,7 +210,7 @@ app.get("/projects_done", (req, res) => {
 	]).then(function (courses) {
 		console.log(courses);
 		res.render("pages/allProjects", {
-			projects,
+			courses,
 		});
 	}).catch(function (err) {
 		return res.status(200).json(err);
@@ -235,7 +236,7 @@ app.get("/projects_not_done", (req, res) => {
 	]).then(function (courses) {
 		console.log(courses);
 		res.render("pages/allProjects", {
-			projects,
+			courses,
 		});
 	}).catch(function (err) {
 		return res.status(200).json(err);
@@ -264,19 +265,6 @@ app.get("/allEmployees", (req, res) => {
 		}).catch(function (err) {
 			return res.status(200).json(err);
 		});
-});
-
-app.get("/projects", async (req, res) => {
-	let query = 'select * from projects'; // get proj data
-
-	try {
-		res.render("pages/allProjects");
-	}
-	catch {
-		console.log("error!");
-		res.redirect("/profile");
-	}
-
 });
 
 app.get("/project", async (req, res) => {

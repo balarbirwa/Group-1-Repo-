@@ -1,28 +1,40 @@
 <%- include ('../partials/header') %>
 
     <main>
-        <center>
-            <div class="container">
-                <div class="row">
-                    <div class="col-sm">
-                        <div class="card" style="width: 15rem; height: 20rem">
-                            <div class="card-body">
-                                <h5 class="card-title"><a href='employee'>Leonora</a></h5>
-                                <p>EMPLOYEE INFO</p>
-                            </div>
+        <div class="container">
+            <% let default_image="https://stadiumhelp.com/wp-content/uploads/2020/11/ticketmaster-logo.jpeg" ; let
+                cols=1; let rows=Math.round(employees.length/cols); %>
+                <% let p=0; %>
+                    <% for (let r=0; r < cols; r++) { %>
+                        <div class="row g-0">
+                            <% employees.forEach(function(employee) { %>
+                                <% let projectName="" ; %>
+
+                                    <div class="col-md-4 g-1">
+
+                                        <div class="card" style="width: 18rem;">
+                                            <img class="card-img-top" src="<%=default_image%>" alt="Card image cap">
+                                            <div class="card-body">
+
+                                                <h5 class="card-title">
+                                                    <%= employee.first_name %>
+                                                </h5>
+                                                <p class="card-subtitle">
+                                                    hej
+                                                </p>
+
+                                                <a href="/employee/<%=employees.user_id%>" class="btn btn-primary">View
+                                                    details</a>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <% }); %>
+
                         </div>
-                    </div>
-                    <div class="col-sm">
-                        <div class="card" style="width: 15rem; height: 20rem">
-                            <div class="card-body">
-                                <h5 class="card-title"><a href='employee'>Michael</a></h5>
-                                <p>EMPLOYEE INFO</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </center>
+                        <%} %>
+
+        </div>
     </main>
 
     <%- include ('../partials/footer') %>

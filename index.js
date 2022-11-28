@@ -51,6 +51,30 @@ app.get("/register", (req, res) => {
 	res.render("pages/register");
 });
 
+app.get("/profile", (req, res) => {
+	res.render("pages/profile", {
+		username: req.session.user.username,
+		first_name: req.session.user.first_name,
+		last_name: req.session.user.last_name,
+	});
+});
+
+app.get("/employeeMenu", (req, res) => {
+	res.render("pages/employeeMenu");
+});
+
+app.get("/employee", (req, res) => {
+	res.render("pages/employee");
+});
+
+const user = {
+	user_id: undefined,
+	username: undefined,
+	first_name: undefined,
+	last_name: undefined,
+	is_manager: undefined,
+};
+
 app.post('/login', async (req, res) => {
 	const username = req.body.username;
 	var query = "Select * FROM users WHERE username=$1"
@@ -140,13 +164,6 @@ app.get("/employee", (req, res) => {
 	res.render("pages/employee");
 });
 
-const user = {
-	user_id: undefined,
-	username: undefined,
-	first_name: undefined,
-	last_name: undefined,
-	is_manager: undefined,
-};
 
 const user_projects = `
 SELECT DISTINCT
@@ -249,83 +266,31 @@ app.get("/allEmployees", (req, res) => {
 		});
 });
 
-
-
-
-app.get("/projects", (req, res) => {
-	res.render("pages/allProjects");
-});
-
-app.get("/projects2", async (req, res) => { // appears to load successfully; docker crashes upon calling this function
-
+app.get("/projects", async (req, res) => {
 	let query = 'select * from projects'; // get proj data
 
-	const result = db.any(query) // query db
-		.then((response) => {
-			response.json(); // access data from promise, translate to json
-		});
-
-	const renderPage = async () => {
-		res.render("pages/allProjects", {
-			projects: result // render projects menu w/ data accessible
-		});
-	}
-
 	try {
-		renderPage();
+		res.render("pages/allProjects");
 	}
 	catch {
 		console.log("error!");
+		res.redirect("/profile");
 	}
+
 });
 
-app.get("/projects3", async (req, res) => { // crashes docker
-	let query = 'select * from projects';
-	db.any(query)
-		.then(projects => {
-			res.render("pages/projects", {
-				projects: projects
-			});
-		});
+app.get("/project", async (req, res) => {
+	let query = 'select * from projects'; // get proj data
+
+	try {
+		res.render("pages/project");
+	}
+	catch {
+		console.log("error!");
+		res.redirect("/profile");
+	}
+
 });
-
-// app.get('/projects/:projectname', function(req,res){
-
-// 	let projects = 'select * from projects';
-// 	let projectname = req.params.projectName;
-// 	let currproject = `select * from projects where projectName = '${projectname}';`;
-
-// 	try{
-// 		db.any(currproject)
-// 	}
-// 	catch{
-
-// 	}
-
-// 	db.task('get-everything', task => {
-// 	   return task.batch([
-// 		   task.any(project),
-// 		   task.any(current_project)
-// 	   ]);
-// 	})
-// 	   .then(data => {
-// 		   res.status('200')
-// 	   .json({
-// 			   projects: data[0],
-// 			   projectinfo: data[2][0]
-// 		   })
-// 	   })
-// 	   .catch(err => {
-// 		   console.log('Uh Oh spaghettio');
-// 		   req.flash('error', err);
-// 		   res.status('400')
-// 	   .json({
-// 			   projects: '',
-// 			   projectinfo: ''
-// 		   })
-// 	   });
-// 	});
-
 
 app.listen(3000);
 console.log("Server is listening on port 3000");

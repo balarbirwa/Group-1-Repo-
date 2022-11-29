@@ -1,16 +1,20 @@
 <%- include ('../partials/header') %>
 
-        <main>
-            <div class="container">
-
-                <h3> [project name] </h3>
-                <text> project description </text>
-                <br>
-                <text> project members </text>
-                <br>
-                <text> project manager </text>
-                
+    <main>
+        <div class="container">
+            <div class="col d-flex justify-content-center margin-top">
+                <div class="card" style="width: 30rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <%= project_name %>
+                        </h5>
+                        <p class="card-text">
+                            <%= description %>
+                        </p>
+                    </div>
+                </div>
             </div>
-        </main>
+        </div>
+    </main>
 
-<%- include ('../partials/footer') %>
+    <%- include ('../partials/footer') %>

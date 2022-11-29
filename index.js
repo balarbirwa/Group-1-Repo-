@@ -154,7 +154,6 @@ app.get("/", (req, res) => {
 	db.any(query, [
 		req.session.user.user_id,
 	]).then(function (projects) {
-		console.log(projects);
 		res.render("pages/profile", {
 			username: req.session.user.username,
 			first_name: req.session.user.first_name,
@@ -192,7 +191,6 @@ app.get("/projects", (req, res) => {
 	db.any(query, [
 		req.session.user.user_id,
 	]).then(function (projects) {
-		console.log(projects);
 		res.render("pages/allProjects", {
 			projects,
 		});
@@ -261,22 +259,15 @@ SELECT *
 		WHERE users_to_manager.user_id = $1)`;
 
 
-
-employee_for_manager = `
-SELECT *
-	FROM
-	users WHERE users.user_id IN(SELECT users_to_manager.user_id
-		FROM users_to_manager
-		WHERE users_to_manager.manager_id = $1)`;
+all_employees = 'SELECT * FROM users'
 
 //Return all employees for a specific manager 
 app.get("/allEmployees", (req, res) => {
-	query = employee_for_manager
+	query = all_employees
 	db.any(query, [
 		req.session.user.user_id,
 	]).then(
 		function (employees) {
-			console.log(employees)
 			res.render("pages/allEmployees", {
 				employees,
 			});
@@ -296,6 +287,23 @@ app.get("/project", async (req, res) => {
 		res.redirect("/profile");
 	}
 
+});
+
+app.get('/project/:project_id', function (req, res) {
+	project_id = req.params.project_id
+	let query = 'select * from projects where project_id=$1 LIMIT 1'; // get proj data
+	console.log("HEJ HEJ HEH!!")
+	db.any(query, [
+		project_id
+	]).then((project) => {
+		res.render("pages/project", {
+			project_name: project[0].project_name,
+			description: project[0].description,
+		});
+	}).catch(function (err) {
+		console.log(err)
+		res.redirect("/register")
+	});
 });
 
 app.listen(3000);

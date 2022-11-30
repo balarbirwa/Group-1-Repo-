@@ -12,9 +12,23 @@ Moreover, the site will provide the company with a separate tab for new employee
 - Joshua Dinerman
 
 # Technology Stack
-- List Item 1
-- List Item 2
-- List Item 3
+- Project Tracker
+  - GitHub Board
+- VCS repository 
+  - GitHub
+- Database 
+  - PostgreSQL
+- IDE
+  - VSCode
+- UI Tools
+  - EJS, HTML, Google Drawings
+- Application Server
+  - NodeJS
+- Deployment environment
+  - LocalHost, Heroku
+- Auto-documenter
+  - GitHub “Automatically generated release notes”
+
 
 # Necessary Software
 Prerequisite software:
@@ -40,6 +54,3 @@ Navigate to the root folder in your command prompt using the cd commands. Once i
   - Username: alice
   - Name: alice alice_last_name
   - Password: money
-
-# Deployed Application Access
-<Insert link here>.

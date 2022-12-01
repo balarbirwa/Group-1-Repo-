@@ -9,14 +9,17 @@
     <div class="container">
       <center>
         <form action="/login" method="POST">
-          <label for="username"><span class="fas fa-user"></span> Username:</label><br>
-          <input type="text" id="username" name="username" required><br>
-          <label for="password"><span class="fas fa-eye"></span> Password:</label><br>
-          <input type="password" id="password" name="password" required><br><br>
-          <input type="submit" value="Submit" href="POST /login">
-          <span class="fas fa-arrow-right"></span>
-        </form>
-      </center>
+          <!-- USERNAME -->
+          <label for="input" class="form-label">Username</label>
+          <input type="text" class="form-control" aria-describedby="caption" id="eventTitle" name="username" required>
+    
+          <!-- PASSWORD -->
+          <label for="input" class="form-label">Password</label>
+          <input type="text" class="form-control" aria-describedby="caption" id="eventTitle" name="password" required>
+          <br>
+          <button id="submit_button" class="btn btn-primary" type="submit">Login</button>
+      </form>
+          </center>
     </div>
     <center>
       <font size="+50">&emsp;</font>

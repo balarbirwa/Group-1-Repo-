@@ -1,17 +1,24 @@
 INSERT INTO users (username, first_name, last_name, is_manager, password) VALUES
-('CEOMan', 'Richard', 'Mann', TRUE, '$2b$10$I75WivfjbJCFZc0phyDM9Ot/awMxsqk9cE9iPyNh1ODsWolzUKWiu'),
-('123', 'bob', 'bob_last_name', FALSE, '$2b$10$I75WivfjbJCFZc0phyDM9Ot/awMxsqk9cE9iPyNh1ODsWolzUKWiu'),
-('alice', 'alice', 'alice_last_name', FALSE, '$2b$10$I75WivfjbJCFZc0phyDM9Ot/awMxsqk9cE9iPyNh1ODsWolzUKWiu')
+('Sara', 'Sara', 'Collins', TRUE, '$2b$10$I75WivfjbJCFZc0phyDM9Ot/awMxsqk9cE9iPyNh1ODsWolzUKWiu'),
+('test', 'Bob', 'Andersson', FALSE, '$2b$10$I75WivfjbJCFZc0phyDM9Ot/awMxsqk9cE9iPyNh1ODsWolzUKWiu'),
+('Alice', 'Alice', 'Baker', FALSE, '$2b$10$I75WivfjbJCFZc0phyDM9Ot/awMxsqk9cE9iPyNh1ODsWolzUKWiu')
 ;
 
 INSERT INTO projects(
     project_name, 
     description
 ) VALUES 
-('Project01', 'To create value in the company. Products and/or services will be offered to customers upon completion.'),
-('Project02', 'To meet the goals of our top customer. They have requested a suite of products and services.'),
-('Project03', 'To be completed in time for the conclusion. Project03 is on a very strict timeline.')
+('Sentiment analysis for product rating', 'This project aims to develop a sentiment analysis system for product rating. It is an e-commerce web application. 
+The main goal of this sentiment analysis system is to understand the hidden sentiments of customers in feedback and comments and analyze 
+their product rating patterns. '),
+('Android task monitoring', 'This project is exclusively designed to simplify 
+the tracking and monitoring of day-to-day activities of busy modern life. We are so busy in our daily lives right now that 
+it becomes impossible to keep track of our daily events, meetings, and appointments.'),
+('Fingerprint-based ATM system', 'This project is a desktop application that uses the fingerprint of users for authentication. 
+Since each individual has a unique fingerprint, this method of using fingerprint as a means of authentication to access your ATM 
+is safer and more secure than using an ATM card. Users need not carry their ATM cards with them at all times they can use their fingerprint to access ATM services. ')
 ;
+
 
 INSERT INTO users_to_projects(
     user_id,

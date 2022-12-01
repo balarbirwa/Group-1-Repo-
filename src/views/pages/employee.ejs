@@ -1,39 +1,73 @@
 <%- include ('../partials/header') %>
 
     <main>
-        <center>
-            <font size="+50">&emsp;</font>
-            <table>
-                <tr>
-                    <td>
-                        <h5>Your Information&emsp;</h5>
-                        <p>Name: EMPLOYEE NAME&emsp;</p>
-                        <p>Username: EMPLOYEE USERNAME&emsp;</p>
-                        <p>Company: EMPLOYEE COMPANY&emsp;</p>
-                    </td>
-                    <td>
-                        <h5>Your Manager&emsp;</h5>
-                        <p>MANAGER'S NAME&emsp;</p>
-                    </td>
-                    <td>
-                        <h5>Your Progress&emsp;</h5>
-                        <p>PERCENTAGE&emsp;</p>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="3">
-                        <h5>Incomplete Courses:</h5>
-                        <p>LIST OF COURSES </p>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="3">
-                        <h5>Completed Courses:</h5>
-                        <p>LIST OF COURSES </p>
-                    </td>
-                </tr>
-            </table>
-        </center>
+        <div class="container">
+            <center>
+                <font size="+50">&emsp;</font>
+                <table>
+                    <tr>
+                        <td>
+                            <h5>Employee Information&emsp;</h5>
+                            <p>First Name: <%= employee[0].first_name %> &emsp;</p>
+                            <p>Last Name: <%= employee[0].last_name %> &emsp;</p>
+                            <p>Username: <%= employee[0].username %>&emsp;</p>
+                            <p>Company: Test company&emsp;</p>
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td colspan="3">
+                            <h5>Current Projects:</h5>
+                            <table class="table" id="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Project Name</th>
+                                        <th scope="col">Description</th>
+                                    </tr>
+                                </thead>
+                                <% employee.forEach(function(project) { %>
+                                    <tr>
+                                        <% if(!project.completed){ %>
+                                            <td>
+                                                <%= project.project_name %>
+                                            </td>
+                                            <td>
+                                                <%= project.description %>
+                                            </td>
+                                            <% } %>
+                                    </tr>
+                                    <% }); %>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">
+                            <h5>Completed Projects:</h5>
+                            <table class="table" id="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Project Name</th>
+                                        <th scope="col">Description</th>
+                                    </tr>
+                                </thead>
+                                <% employee.forEach(function(project) { %>
+                                    <tr>
+                                        <% if(project.completed){ %>
+                                            <td>
+                                                <%= project.project_name %>
+                                            </td>
+                                            <td>
+                                                <%= project.description %>
+                                            </td>
+                                            <% } %>
+                                    </tr>
+                                    <% }); %>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </center>
+        </div>
     </main>
 
     <%- include ('../partials/footer') %>

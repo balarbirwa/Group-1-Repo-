@@ -107,6 +107,44 @@ app.post('/login', async (req, res) => {
 		console.log(err);
 		res.redirect("/login");
 	});
+
+	// try {
+	// 	var query = "Select password FROM users WHERE username=$1"
+	// 	let user = await db.oneOrNone(query, username);
+	// 	const hash = await bcrypt.hash(req.body.password, 10)
+
+	// 	if (!user) {
+	// 		res.redirect("/register");
+	// 		return;
+	// 	}
+
+	// 	const match = await bcrypt.compare(hash, user.password); //await is explained in #8
+	// 	if (match) {
+	// 		req.session.user = {
+	// 			api_key: process.env.API_KEY,
+	// 		};
+	// 		user.username = username;
+	// 		user.user_id = data.user_id;
+	// 		user.first_name = data.first_name;
+	// 		user.last_name = data.last_name;
+	// 		user.is_manager = data.is_manager;
+	// 		req.session.user = user;
+	// 		req.session.save();
+	// 		res.redirect("/");
+	// 	}
+	// 	else {
+	// 		console.log(err);
+	// 		res.render("pages/login", {
+	// 			username: req.body.username,
+	// 			password: "",
+	// 			message: "ERROR: Incorrect username or password.",
+	// 		});
+	// 	}
+	// }
+	// catch {
+	// 	console.log(err);
+	// 	res.redirect("/login");
+	// }
 });
 
 app.post('/register', async (req, res) => {
@@ -116,6 +154,7 @@ app.post('/register', async (req, res) => {
 	const is_manager = false;
 	const hash = await bcrypt.hash(req.body.password, 10)
 	var query = "INSERT INTO users (username, first_name, last_name, password, is_manager) VALUES($1, $2, $3, $4, $5);"
+
 	//the logic goes here
 	db.any(query, [
 		username,
@@ -130,6 +169,31 @@ app.post('/register', async (req, res) => {
 		console.log(err)
 		res.redirect("/register")
 	});
+
+	// try {
+	// 	await db.any(query, [
+	// 		req.body.username,
+	// 		req.body.firstname,
+	// 		req.body.lastname,
+	// 		hash,
+	// 		false,
+	// 	]);
+
+	// 	// res.redirect('/login');
+	// 	res.render("pages/login", {
+	// 		username: req.body.username,
+	// 		password: "",
+	// 		message: "Registration successful. Please log in.",
+	// 	});
+
+	// }
+	// catch {
+	// 	console.log(err)
+	// 	res.render("/register")
+
+	// }
+
+
 });
 
 

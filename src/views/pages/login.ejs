@@ -4,22 +4,26 @@
     <center>
       <h2>Welcome!</h2>
       <h5>Log into your account:</h5>
+      <span class="fas fa-sign-in-alt"></span>
     </center>
-    <center><span class="fas fa-sign-in-alt"></span></center>
     <div class="container">
       <center>
         <form action="/login" method="POST">
-          <!-- USERNAME -->
-          <label for="input" class="form-label">Username</label>
-          <input type="text" class="form-control" aria-describedby="caption" id="eventTitle" name="username" required>
+          <div class="form-group col-md-4">
+  
+            <!-- USERNAME -->
+            <div class="form-group">
+              <input type="text" class="form-control" aria-describedby="caption" name="username" placeholder="Username" required>
+            </div>
     
-          <!-- PASSWORD -->
-          <label for="input" class="form-label">Password</label>
-          <input type="text" class="form-control" aria-describedby="caption" id="eventTitle" name="password" required>
-          <br>
-          <button id="submit_button" class="btn btn-primary" type="submit">Login</button>
-      </form>
-          </center>
+            <!-- PASSWORD -->
+            <div class="form-group">
+              <input type="password" class="form-control" aria-describedby="caption" name="password" placeholder="Password" required>
+            </div>
+  
+            <button id="submit_button" class="btn btn-primary" type="submit">Register</button>
+        </form>
+      </center>
     </div>
     <center>
       <font size="+50">&emsp;</font>

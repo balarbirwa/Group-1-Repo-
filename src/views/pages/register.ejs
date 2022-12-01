@@ -1,11 +1,11 @@
 <%- include ('../partials/header') %>
 
-  <center>
+<center>
     <h2>Welcome!</h2>
     <h5>Create your account:</h5>
     <span class="fas fa-user-circle"></span>
-  </center>
-  <div class="container">
+</center>
+<div class="container">
     <center>
       <form action="/register" method="POST">
         <div class="form-group col-md-4">
@@ -17,15 +17,15 @@
 
           <!-- NAME -->
           <div class="form-group">
-          <div class="row">
-            <div class="col">
-              <input type="text" class="form-control" aria-describedby="caption" name="username" placeholder="First name" required>
-            </div>
-            <div class="col">
-              <input type="text" class="form-control" aria-describedby="caption" name="username" placeholder="Last name" required>
+            <div class="row">
+              <div class="col">
+                <input type="text" class="form-control" aria-describedby="caption" name="username" placeholder="First name" required>
+              </div>
+              <div class="col">
+                <input type="text" class="form-control" aria-describedby="caption" name="username" placeholder="Last name" required>
+              </div>
             </div>
           </div>
-        </div>
 
           <!-- PASSWORD -->
           <div class="form-group">
@@ -34,11 +34,11 @@
 
           <button id="submit_button" class="btn btn-primary" type="submit">Register</button>
       </form>
-  </div>
+    </div>
     <font size="+50">&emsp;</font>
     <p>Already have an account?</p>
     <a href='login'> Login </a>
   </center>
-  </main>
+</main>
 
-  <%- include ('../partials/footer') %>
+<%- include ('../partials/footer') %>

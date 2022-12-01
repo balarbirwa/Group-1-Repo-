@@ -1,49 +1,55 @@
 <%- include ('../partials/header') %>
-    <%- include ('../partials/menu') %>
-<main>
-    <center>
-      <font size = "+50">&emsp;</font>
-      <table>
-        <tr>
-          <td>
-            <h5 class="card-title" >Your Information&emsp;</h5>
-            <p>Name: <%= first_name %>&emsp;</p>
-            <p>Username: <%= username %>&emsp;</p>
-            <p>Company: <%= company %>&emsp;</p>
-          </td>
-          <td>
-            <h5>Your Manager&emsp;</h5>
-            <p><%= manager_id %>&emsp;</p>
-          </td>
-          <td>
-            <h5>Your Progress&emsp;</h5>
-            <p>PERCENTAGE&emsp;</p>
-          </td>
-        </tr>
-        <tr>
-          <td colspan = "3">
-            <h5>Current Project:</h5>
-            <p><%=project_name%> </p>
-            <h5>Project Description</h5>
-            <p><%=description%></p>
-            <h5>Collaborators:</h5>
-            <p>LIST OF EMPLOYEES</p>
-          </td>
-        </tr>
-        <tr>
-          <td colspan = "3">
-            <h5>Incomplete Projects:</h5>
-            <p>LIST OF PROJECTS </p>
-          </td>
-        </tr>
-        <tr>
-          <td colspan = "3">
-            <h5>Completed Projects:</h5>
-            <p>LIST OF PROJECTS </p>
-          </td>
-        </tr>
-      </table>
-    </center>
-  </main>
+  <%- include ('../partials/menu') %>
+    <main>
+      <center>
+        <font size="+50">&emsp;</font>
+        <table>
+          <tr>
+            <td>
+              <h5 class="card-title">Your Information&emsp;</h5>
+              <p>Name: <%= first_name %>&emsp;</p>
+              <p>Username: <%= username %>&emsp;</p>
+              <p>Company: <%= company %>&emsp;</p>
+            </td>
+            <td>
+              <h5>Your Manager&emsp;</h5>
+              <p>
+                <%= manager_id %>&emsp;
+              </p>
+            </td>
+            <td>
+              <h5>Your Progress&emsp;</h5>
+              <p>PERCENTAGE&emsp;</p>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="3">
+              <h5>Current Project:</h5>
+              <p>
+                <%=project_name%>
+              </p>
+              <h5>Project Description</h5>
+              <p>
+                <%=description%>
+              </p>
+              <h5>Collaborators:</h5>
+              <p>LIST OF EMPLOYEES</p>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="3">
+              <h5>Incomplete Projects:</h5>
+              <p>LIST OF PROJECTS </p>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="3">
+              <h5>Completed Projects:</h5>
+              <p><%=completed%> </p>
+            </td>
+          </tr>
+        </table>
+      </center>
+    </main>
 
-<%- include ('../partials/footer') %>
+    <%- include ('../partials/footer') %>

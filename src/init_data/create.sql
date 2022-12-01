@@ -13,7 +13,7 @@ DROP TABLE IF EXISTS projects;
 CREATE TABLE projects(
     project_id SERIAL PRIMARY KEY, 
     project_name VARCHAR(50), 
-    description VARCHAR(500)
+    description VARCHAR(5000)
 );
 
 DROP TABLE IF EXISTS users_to_projects;

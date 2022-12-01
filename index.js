@@ -292,7 +292,6 @@ app.get("/project", async (req, res) => {
 app.get('/project/:project_id', function (req, res) {
 	project_id = req.params.project_id
 	let query = 'select * from projects where project_id=$1 LIMIT 1'; // get proj data
-	console.log("HEJ HEJ HEH!!")
 	db.any(query, [
 		project_id
 	]).then((project) => {
@@ -302,9 +301,35 @@ app.get('/project/:project_id', function (req, res) {
 		});
 	}).catch(function (err) {
 		console.log(err)
-		res.redirect("/register")
 	});
 });
+
+const employee_projects = `
+SELECT 
+*
+  FROM
+  users_to_projects
+	JOIN projects ON users_to_projects.project_id = projects.project_id 
+	JOIN users ON users.user_id = users_to_projects.user_id
+		WHERE users_to_projects.user_id = $1;`
+
+
+app.get('/employee/:user_id', function (req, res) {
+	user_id = req.params.user_id
+	query = employee_projects // get proj data
+	db.any(query, [
+		user_id
+	]).then((employee) => {
+		console.log(user)
+		res.render("pages/employee", {
+			employee,
+		});
+	}).catch(function (err) {
+		console.log(err)
+	});
+});
+
+
 
 app.listen(3000);
 console.log("Server is listening on port 3000");

@@ -1,9 +1,11 @@
 <%- include ('../partials/header') %>
 <%- include ('../partials/menu') %>
 <main>
-      <center>
-        <font size="+50">&emsp;</font>
-        <table>
+  <center>
+      <font size="+50">&emsp;</font>
+      
+      <table>
+      
           <tr>
             <td>
               <h5 class="card-title">Your Information&emsp;</h5>
@@ -22,6 +24,7 @@
               <p>PERCENTAGE&emsp;</p>
             </td>
           </tr>
+          
           <tr>
             <td colspan="3">
               <h5>Current Project:</h5>
@@ -36,20 +39,24 @@
               <p>LIST OF EMPLOYEES</p>
             </td>
           </tr>
+          
           <tr>
             <td colspan="3">
               <h5>Incomplete Projects:</h5>
               <p>LIST OF PROJECTS </p>
             </td>
           </tr>
+          
           <tr>
             <td colspan="3">
               <h5>Completed Projects:</h5>
               <p><%=completed%> </p>
             </td>
           </tr>
+          
         </table>
-      </center>
+        
+  </center>
 </main>
 
 <%- include ('../partials/footer') %>

@@ -1,52 +1,44 @@
 <%- include ('../partials/header') %>
 
-<<<<<<< HEAD
-        <main>
-            <div class="container">
- 
-                
-
-                <!-- let default_image="https://stadiumhelp.com/wp-content/uploads/2020/11/ticketmaster-logo.jpeg" ;  -->
-                <% let cols=4; let rows = 10/cols; %>
-                    <% let p = 0; %>
-=======
->>>>>>> e8ba176b275d23717fcad979a35db4962e924582
-
     <main>
         <div class="container">
-            <% let default_image="https://stadiumhelp.com/wp-content/uploads/2020/11/ticketmaster-logo.jpeg" ; let
-                cols=1; let rows=Math.round(projects.length/cols); %>
-                <% let p=0; %>
-                    <% for (let r=0; r < cols; r++) { %>
-                        <div class="row g-0">
 
-                            <% projects.forEach(function(project) { %>
-                                <% let projectName="" ; %>
 
-                                    <div class="col-md-4 g-1">
+            <main>
+                <div class="container">
+                    <% cols=1; let rows=Math.round(projects.length/cols); %>
+                        <% let p=0; %>
+                            <% for (let r=0; r < cols; r++) { %>
+                                <div class="row g-0">
 
-                                        <div class="card" style="width: 18rem;">
-                                            <!-- <img class="card-img-top" src="<%=default_image%>" alt="Card image cap"> -->
-                                            <div class="card-body">
+                                    <% projects.forEach(function(project) { %>
+                                        <% let projectName="" ; %>
 
-                                                <h5 class="card-title">
-                                                    <%= project.project_name %>
-                                                </h5>
-                                                <p class="card-subtitle">
-                                                    <%= project.description %>
-                                                </p>
+                                            <div class="col-md-4 g-1">
 
-                                                <a href="/project/<%=project.project_id%>" class="btn btn-primary">View
-                                                    details</a>
+                                                <div class="card" style="width: 18rem;">
+                                                    <!-- <img class="card-img-top" src="<%=default_image%>" alt="Card image cap"> -->
+                                                    <div class="card-body">
+
+                                                        <h5 class="card-title">
+                                                            <%= project.project_name %>
+                                                        </h5>
+                                                        <p class="card-subtitle">
+                                                            <%= project.description %>
+                                                        </p>
+
+                                                        <a href="/project/<%=project.project_id%>"
+                                                            class="btn btn-primary">View
+                                                            details</a>
+                                                    </div>
+                                                </div>
+
                                             </div>
-                                        </div>
+                                            <% }); %>
+                                </div>
+                                <%} %>
 
-                                    </div>
-                                    <% }); %>
-                        </div>
-                        <%} %>
+                </div>
+            </main>
 
-        </div>
-    </main>
-
-    <%- include ('../partials/footer') %>
+            <%- include ('../partials/footer') %>

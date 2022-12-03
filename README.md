@@ -37,20 +37,4 @@ Prerequisite software:
 
 # Locally Running ""The Company" Portal"
 
-Navigate to the root folder in your command prompt using the cd commands. Once in the root directory, run the following command: "docker-compose up". Wait for the local servers to start up. Once the server and databases are connected, in your chosen internet browser navigate to: "localhost:3000". Sample users that we have populated the database with are:
-
-- Manager
-  - Username: CEOMan
-  - Name: Richard Mann
-  - Password: money
-
-- Employees
-  - Username: 123
-  - Name: bob bob_last_name
-  - Password: money
-
-  - Username: alice
-  - Name: alice alice_last_name
-  - Password: money
-
-  
+Navigate to the root folder in your command prompt using the cd commands. Once in the root directory, run the following command: "docker-compose up". Wait for the local servers to start up. Once the server and databases are connected, in your chosen internet browser navigate to: "localhost:3000".  "localhost:3000". From there, users can create an account and sign in with their new credentials. 
